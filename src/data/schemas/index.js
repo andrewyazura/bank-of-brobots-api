@@ -35,6 +35,7 @@ const schema = buildSchema(`
     transfer(from_account_id: ID!, to_account_id: ID!, money: Int!): Transaction!
 
     createAccount(customName: String): Account!
+    changeAccountName(accountId: ID!, newCustomName: String): Account!
   }
 `);
 

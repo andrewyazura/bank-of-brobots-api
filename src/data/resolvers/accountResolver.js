@@ -3,7 +3,7 @@ import accountModel from '../../models/accountModel';
 
 const accountResolver = {
   account: async ({ id }, request) => {
-    let account = await accountModel
+    const account = await accountModel
       .findById(id)
       .populate('owner')
       .populate({
@@ -32,6 +32,14 @@ const accountResolver = {
 
     user.accounts.push(account);
     user.save();
+    account.save();
+
+    return account;
+  },
+
+  changeAccountName: async ({ accountId, newCustomName }, request) => {
+    const account = await accountModel.findById(accountId).exec();
+    account.customName = newCustomName;
     account.save();
 
     return account;
