@@ -12,10 +12,22 @@ router.use('/register', async (req, res) => {
   let body = req.body;
 
   if (!body.name || !body.email || !body.password)
-    res.status(400).send({ message: 'Not enough args' });
+    res.status(400).send({ message: 'Not enough arguments given' });
 
-  const user = await register(body.name, body.email, body.password);
-  res.json(user);
+  register(body.name, body.email, body.password)
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      let message =
+        err.code == 11000
+          ? 'Such user already exists'
+          : 'Unknown error occurred';
+
+      res.status(500).send({
+        message,
+      });
+    });
 });
 
 router.use('/login', async (req, res) => {
@@ -24,8 +36,13 @@ router.use('/login', async (req, res) => {
   if (!body.email || !body.password)
     res.status(400).send({ message: 'Not enough args' });
 
-  const token = await login(body.email, body.password);
-  res.json({ token });
+  login(body.email, body.password)
+    .then((token) => {
+      res.json({ token });
+    })
+    .catch((err) => {
+      res.status(400).send({ message: 'Invalid credentials' });
+    });
 });
 
 router.use(
