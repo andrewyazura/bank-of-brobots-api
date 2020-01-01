@@ -13,12 +13,6 @@ const userResolver = {
           path: 'transactions',
         },
       })
-      .populate({
-        path: 'accounts',
-        populate: {
-          path: 'owner',
-        },
-      })
       .exec();
 
     return user;
