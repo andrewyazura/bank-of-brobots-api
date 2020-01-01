@@ -13,6 +13,12 @@ const userResolver = {
           path: 'transactions',
         },
       })
+      .populate({
+        path: 'accounts',
+        populate: {
+          path: 'owner',
+        },
+      })
       .exec();
 
     return user;
@@ -25,8 +31,14 @@ const userResolver = {
       money,
     });
 
-    const account1 = await accountModel.findById(from_account_id).exec();
+    const account1 = await accountModel
+      .findById(from_account_id)
+      .populate('owner')
+      .exec();
     const account2 = await accountModel.findById(to_account_id).exec();
+
+    if (request.user.id != account1.owner.id)
+      throw new Error("Account isn't owned by the user");
 
     account1.transactions.push(transaction);
     account2.transactions.push(transaction);
