@@ -4,6 +4,9 @@ import transactionModel from '../../models/transactionModel';
 
 const userResolver = {
   user: async ({ id }, request) => {
+    if (request.user.id != id)
+      throw new Error("User can't see other users' data");
+
     const user = await userModel
       .findById(id)
       .populate('accounts')

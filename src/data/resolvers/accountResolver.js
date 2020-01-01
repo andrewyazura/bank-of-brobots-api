@@ -20,6 +20,9 @@ const accountResolver = {
       })
       .exec();
 
+    if (request.user.id != account.owner.id)
+      throw new Error("Account isn't owned by the user");
+
     return account;
   },
 
@@ -39,6 +42,10 @@ const accountResolver = {
 
   changeAccountName: async ({ accountId, newCustomName }, request) => {
     const account = await accountModel.findById(accountId).exec();
+
+    if (request.user.id != account.owner.id)
+      throw new Error("Account isn't owned by the user");
+
     account.customName = newCustomName;
     account.save();
 
