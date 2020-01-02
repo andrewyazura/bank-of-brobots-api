@@ -1,6 +1,7 @@
 import transactionModel from '../../models/transactionModel';
-import findUser from '../../services/findUser';
+import allUsers from '../../services/allUsers';
 import findAccount from '../../services/findAccount';
+import findUser from '../../services/findUser';
 
 const userResolver = {
   user: async ({ id }, request) => {
@@ -10,6 +11,16 @@ const userResolver = {
       throw new Error("User can't see other users' data");
 
     return user;
+  },
+
+  users: async (args, request) => {
+    const user = await findUser(request.user.id);
+
+    if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
+
+    const users = await allUsers();
+
+    return users;
   },
 
   transfer: async ({ from_account_id, to_account_id, money }, request) => {

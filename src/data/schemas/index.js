@@ -26,8 +26,12 @@ const schema = buildSchema(`
 
   type Query {
     user(id: ID!): User!
+    users: [User]
 
     account(id: ID!): Account!
+    accounts: [Account]
+
+    transactions: [Transaction]
   }
 
   type Mutation {

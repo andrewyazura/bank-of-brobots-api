@@ -1,6 +1,7 @@
 import accountModel from '../../models/accountModel';
-import findUser from '../../services/findUser';
+import allAccounts from '../../services/allAccounts';
 import findAccount from '../../services/findAccount';
+import findUser from '../../services/findUser';
 
 const accountResolver = {
   account: async ({ id }, request) => {
@@ -12,11 +13,21 @@ const accountResolver = {
     return account;
   },
 
+  accounts: async (args, request) => {
+    const user = await findUser(request.user.id);
+
+    if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
+
+    const accounts = await allAccounts();
+    return accounts;
+  },
+
   createAccount: async ({ customName }, request) => {
     const account = await accountModel.create({
       customName,
       owner: request.user.id.toString(),
     });
+
     const user = await findUser(request.user.id);
 
     user.accounts.push(account);
