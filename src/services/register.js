@@ -9,5 +9,6 @@ export default async (name, email, password) => {
 
   user = user.toObject();
   delete user.password;
+
   return user;
 };

@@ -19,14 +19,18 @@ router.use('/register', async (req, res) => {
       res.json(user);
     })
     .catch((err) => {
-      let message =
-        err.code == 11000
-          ? 'Such user already exists'
-          : 'Unknown error occurred';
+      if (err.code == 11000) {
+        let duplicatedKey = Object.keys(err.keyValue)[0];
 
-      res.status(500).send({
-        message,
-      });
+        res.status(400).send({
+          message: `User with such ${duplicatedKey} already exists`,
+          duplicatedKey,
+        });
+      } else {
+        res.status(500).send({
+          message: 'Unknown error occurred',
+        });
+      }
     });
 });
 
