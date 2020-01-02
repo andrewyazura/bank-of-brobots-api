@@ -40,6 +40,7 @@ const schema = buildSchema(`
 
     createAccount(customName: String): Account!
     changeAccountName(accountId: ID!, newCustomName: String): Account!
+    removeAccount(accountId: ID!): Boolean
   }
 `);
 
