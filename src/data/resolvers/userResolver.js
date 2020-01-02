@@ -30,6 +30,8 @@ const userResolver = {
     if (request.user.id != account1.owner.id)
       throw new Error("Account isn't owned by the user");
 
+    if (money > account1.money) throw new Error('Not enough money on account');
+
     const transaction = await transactionModel.create({
       fromAccount: from_account_id,
       toAccount: to_account_id,
