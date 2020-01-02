@@ -1,47 +1,11 @@
 import { buildSchema } from 'graphql';
+import fs from 'fs';
+import path from 'path';
 
-const schema = buildSchema(`
-  type User {
-    id: ID!
-    isAdmin: Boolean
-    name: String!
-    email: String!
-    accounts: [Account]
-  }
-
-  type Account {
-    id: ID!
-    customName: String
-    money: Int
-    owner: User!
-    transactions: [Transaction]
-  }
-
-  type Transaction {
-    id: ID!
-    fromAccount: Account!
-    toAccount: Account!
-    money: Int!
-  }
-
-  type Query {
-    user(id: ID!): User!
-    users: [User]
-
-    account(id: ID!): Account!
-    accounts: [Account]
-
-    transactions: [Transaction]
-  }
-
-  type Mutation {
-    createUser(name: String!, email: String!, password: String!): User!
-    transfer(from_account_id: ID!, to_account_id: ID!, money: Int!): Transaction!
-
-    createAccount(customName: String): Account!
-    changeAccountName(accountId: ID!, newCustomName: String): Account!
-    removeAccount(accountId: ID!): Boolean
-  }
-`);
+const schema = buildSchema(
+  fs.readFileSync(path.join(__dirname, './schema.graphql'), {
+    encoding: 'utf8',
+  }),
+);
 
 export default schema;

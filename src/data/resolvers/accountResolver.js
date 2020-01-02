@@ -1,5 +1,4 @@
 import accountModel from '../../models/accountModel';
-import allAccounts from '../../services/allAccounts';
 import findAccount from '../../services/findAccount';
 import findUser from '../../services/findUser';
 
@@ -11,15 +10,6 @@ const accountResolver = {
       throw new Error("Account isn't owned by the user");
 
     return account;
-  },
-
-  accounts: async (args, request) => {
-    const user = await findUser(request.user.id);
-
-    if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
-
-    const accounts = await allAccounts();
-    return accounts;
   },
 
   createAccount: async ({ customName }, request) => {
