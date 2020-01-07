@@ -2,8 +2,11 @@ require('dotenv').config();
 
 const expConf = {
   port: process.env.EXPRESS_PORT || '8080',
-  allowOriginHeader: process.env.ALLOW_ORIGIN_HEADER || '',
-  allowHeadersHeader: process.env.ALLOW_HEADERS_HEADER || '',
+};
+
+const corsConf = {
+  origin: process.env.ALLOW_ORIGIN_HEADER || '',
+  allowedHeaders: process.env.ALLOW_HEADERS_HEADER || '',
 };
 
 const jwtConf = { expiresIn: process.env.JWT_EXPIRATION || '24h' };
@@ -23,4 +26,4 @@ const dbConnectConf = {
   useCreateIndex: true,
 };
 
-export { expConf, jwtConf, exJwtConf, dbConf, dbConnectConf };
+export { expConf, corsConf, jwtConf, exJwtConf, dbConf, dbConnectConf };
