@@ -21,8 +21,8 @@ const accountResolver = {
     const user = await findUser(request.user.id);
 
     user.accounts.push(account);
-    user.save();
-    account.save();
+    await user.save();
+    await account.save();
 
     return account;
   },
@@ -34,7 +34,7 @@ const accountResolver = {
       throw new Error("Account isn't owned by the user");
 
     account.customName = newCustomName;
-    account.save();
+    await account.save();
 
     return account;
   },
@@ -47,7 +47,7 @@ const accountResolver = {
 
     if (account.money < 0) throw new Error('Account balance is less than 0');
 
-    account.remove();
+    await account.remove();
     return true;
   },
 };

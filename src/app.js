@@ -1,12 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import { expConf, dbConf, dbConnectConf } from './config';
+import { expConf } from './config';
 
 import cors from './middleware/cors';
 import auth from './middleware/auth';
 
 import routes from './routes';
+import connectDatabase from './data/connectDb';
 
 const app = express();
 
@@ -20,5 +20,5 @@ app.use('/api', routes);
 
 let server = app.listen(expConf['port'], () => {
   console.log('Listening on port: ' + server.address().port);
-  mongoose.connect(dbConf['dbPath'], dbConnectConf);
+  connectDatabase();
 });

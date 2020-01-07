@@ -41,7 +41,7 @@ const adminResolver = {
     const account = await findAccount(accountId);
 
     account.money += money;
-    account.save();
+    await account.save();
 
     return true;
   },

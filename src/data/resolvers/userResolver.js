@@ -33,8 +33,8 @@ const userResolver = {
     account1.money -= money;
     account2.money += money;
 
-    account1.save();
-    account2.save();
+    await account1.save();
+    await account2.save();
 
     return transaction;
   },

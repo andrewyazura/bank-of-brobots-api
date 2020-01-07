@@ -8,14 +8,17 @@
   "private": true,
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src --out-dir build"
+    "test": "jest",
+    "build": "babel src --out-file compiled.js",
+    "buildDir": "babel src --out-dir build"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",
     "@babel/core": "^7.7.7",
     "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
     "nodemon": "^2.0.2"
   },
   "dependencies": {
@@ -28,5 +31,8 @@
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
