@@ -84,5 +84,22 @@ describe('account resolver', () => {
     expect(account.toObject()).toMatchObject(obj);
   });
 
-  test('removeAccount endpoint', async () => {});
+  test('removeAccount endpoint', async () => {
+    const user = await userModel.create({
+      name: 'x',
+      email: 'y',
+      password: 'z',
+    });
+
+    const obj = await accountModel.create({
+      owner: user,
+    });
+
+    await accountResolver.removeAccount(
+      { accountId: obj._id },
+      { user: { id: user._id } },
+    );
+
+    expect(await accountModel.findById(obj._id)).toBeNull();
+  });
 });
