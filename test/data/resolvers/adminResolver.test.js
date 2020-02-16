@@ -1,5 +1,4 @@
 import adminResolver from '../../../src/data/resolvers/adminResolver';
-import userResolver from '../../../src/data/resolvers/userResolver';
 import transactionModel from '../../../src/models/transactionModel';
 import userModel from '../../../src/models/userModel.js';
 import accountModel from '../../../src/models/accountModel.js';
