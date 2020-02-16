@@ -32,20 +32,20 @@ describe('user resolver', () => {
       password: '123',
     });
 
-    let fromAccount = await accountModel.create({ money: 5000, owner }),
+    let fromAccount = await accountModel.create({ money: 100, owner }),
       toAccount = await accountModel.create({});
 
     await userResolver.transfer(
       {
         from_account_id: fromAccount._id,
         to_account_id: toAccount._id,
-        money: 1000,
+        money: 40,
       },
       { user: { id: owner._id } },
     );
 
     fromAccount = await findAccount(fromAccount._id);
 
-    expect(fromAccount.money).toBe(4000);
+    expect(fromAccount.money).toBe(60);
   });
 });
