@@ -26,6 +26,22 @@ const userSchema = new mongoose.Schema({
       ref: 'Account',
     },
   ],
+  weekLimit: {
+    type: Number,
+    default: 40,
+  },
+  weekLeft: {
+    type: Number,
+    default: 40,
+  },
+  planCost: {
+    type: Number,
+    default: 0,
+  },
+  planName: {
+    type: String,
+    default: 'Free',
+  },
 });
 
 userSchema.pre('save', function() {

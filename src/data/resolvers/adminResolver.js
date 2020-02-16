@@ -1,7 +1,7 @@
 import allAccounts from '../../services/allAccounts';
 import allTransactions from '../../services/allTransactions';
 import allUsers from '../../services/allUsers';
-import findAccount from '../../services/findAccount';
+import addMoney from '../../services/addMoney';
 import findUser from '../../services/findUser';
 
 const adminResolver = {
@@ -38,12 +38,7 @@ const adminResolver = {
 
     if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
 
-    const account = await findAccount(accountId);
-
-    account.money += money;
-    await account.save();
-
-    return true;
+    return await addMoney(accountId, money);
   },
 };
 

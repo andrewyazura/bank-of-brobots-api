@@ -26,4 +26,30 @@ const dbConnectConf = {
   useCreateIndex: true,
 };
 
-export { expConf, corsConf, jwtConf, exJwtConf, dbConf, dbConnectConf };
+const subscriptions = [
+  {
+    name: 'Free',
+    limit: 40,
+    cost: 0,
+  },
+  {
+    name: 'Basic',
+    limit: 60,
+    cost: 10,
+  },
+  {
+    name: 'Premium',
+    limit: null,
+    cost: 30,
+  },
+];
+
+export {
+  expConf,
+  corsConf,
+  jwtConf,
+  exJwtConf,
+  dbConf,
+  dbConnectConf,
+  subscriptions,
+};
