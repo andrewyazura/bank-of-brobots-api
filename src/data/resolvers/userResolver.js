@@ -1,8 +1,8 @@
+import { subscriptions } from '../../config';
 import transactionModel from '../../models/transactionModel';
 import findAccount from '../../services/accounts/findAccount';
-import findUser from '../../services/users/findUser';
-import { subscriptions } from '../../config';
 import addMoney from '../../services/addMoney';
+import findUser from '../../services/users/findUser';
 
 const userResolver = {
   user: async ({ id }, request) => {

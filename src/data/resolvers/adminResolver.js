@@ -1,7 +1,7 @@
 import allAccounts from '../../services/accounts/allAccounts';
+import addMoney from '../../services/addMoney';
 import allTransactions from '../../services/allTransactions';
 import allUsers from '../../services/users/allUsers';
-import addMoney from '../../services/addMoney';
 import findUser from '../../services/users/findUser';
 
 const adminResolver = {

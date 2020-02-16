@@ -1,6 +1,6 @@
 import userResolver from '../../data/resolvers/userResolver';
-import allUsers from '../users/allUsers';
 import addMoney from '../addMoney';
+import allUsers from '../users/allUsers';
 
 export default async () => {
   const users = await allUsers();
