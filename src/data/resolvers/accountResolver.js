@@ -1,6 +1,6 @@
 import accountModel from '../../models/accountModel';
-import findAccount from '../../services/findAccount';
-import findUser from '../../services/findUser';
+import findAccount from '../../services/accounts/findAccount';
+import findUser from '../../services/users/findUser';
 
 const accountResolver = {
   account: async ({ id }, request) => {

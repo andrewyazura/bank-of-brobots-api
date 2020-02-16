@@ -1,8 +1,8 @@
-import userModel from '../models/userModel';
+import userModel from '../../models/userModel';
 
-export default async () => {
-  let users = await userModel
-    .find({})
+export default async (id) => {
+  const user = await userModel
+    .findById(id)
     .populate('accounts')
     .populate({
       path: 'accounts',
@@ -12,5 +12,5 @@ export default async () => {
     })
     .exec();
 
-  return users;
+  return user;
 };
