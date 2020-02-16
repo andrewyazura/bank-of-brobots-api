@@ -3,7 +3,7 @@ import userResolver from '../../../src/data/resolvers/userResolver';
 import transactionModel from '../../../src/models/transactionModel';
 import userModel from '../../../src/models/userModel.js';
 import accountModel from '../../../src/models/accountModel.js';
-import findAccount from '../../../src/services/findAccount';
+import findAccount from '../../../src/services/accounts/findAccount';
 import setupDB from '../../setupDatabase';
 
 setupDB('admin-resolver-test');

@@ -2,8 +2,8 @@ import userResolver from '../../../src/data/resolvers/userResolver';
 import userModel from '../../../src/models/userModel.js';
 import accountModel from '../../../src/models/accountModel.js';
 import { subscriptions } from '../../../src/config';
-import findUser from '../../../src/services/findUser';
-import findAccount from '../../../src/services/findAccount';
+import findUser from '../../../src/services/users/findUser';
+import findAccount from '../../../src/services/accounts/findAccount';
 import setupDB from '../../setupDatabase';
 
 setupDB('user-resolver-test');
@@ -79,7 +79,7 @@ describe('user resolver', () => {
     expect((await findUser(owner._id)).toObject()).toMatchObject(result);
   });
 
-  test('changeSubscription endpoint', async () => {
+  test('changeSubscription endpoint #2', async () => {
     const owner = await userModel.create({
       name: 'John',
       email: 'john@404.com',

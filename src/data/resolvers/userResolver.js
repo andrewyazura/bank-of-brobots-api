@@ -1,6 +1,6 @@
 import transactionModel from '../../models/transactionModel';
-import findAccount from '../../services/findAccount';
-import findUser from '../../services/findUser';
+import findAccount from '../../services/accounts/findAccount';
+import findUser from '../../services/users/findUser';
 import { subscriptions } from '../../config';
 import addMoney from '../../services/addMoney';
 

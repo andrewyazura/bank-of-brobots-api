@@ -1,8 +1,8 @@
-import allAccounts from '../../services/allAccounts';
+import allAccounts from '../../services/accounts/allAccounts';
 import allTransactions from '../../services/allTransactions';
-import allUsers from '../../services/allUsers';
+import allUsers from '../../services/users/allUsers';
 import addMoney from '../../services/addMoney';
-import findUser from '../../services/findUser';
+import findUser from '../../services/users/findUser';
 
 const adminResolver = {
   users: async (args, request) => {

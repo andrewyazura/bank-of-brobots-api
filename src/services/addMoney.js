@@ -1,4 +1,4 @@
-import findAccount from './findAccount';
+import findAccount from './accounts/findAccount';
 
 export default async (accountId, money) => {
   const account = await findAccount(accountId);
