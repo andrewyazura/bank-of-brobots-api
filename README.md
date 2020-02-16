@@ -1,5 +1,8 @@
 # Bank of Brobots API
+![CircleCI](https://img.shields.io/circleci/build/github/andrew4ever/bank-of-brobots-api/dev?token=cbc1bbc18f481418945d31c1d3e4e35ad9a9c0b7)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api)
 
+## Description
 API for first Brobots bank. Bank's currency is **Brobocoin**.
 
 ## Stack
