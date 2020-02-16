@@ -5,7 +5,7 @@ import findAccount from '../../src/services/accounts/findAccount';
 import transactionModel from '../../src/models/transactionModel';
 import setupDB from '../setupDatabase';
 
-setupDB('admin-resolver-test');
+setupDB('add-money-test');
 
 describe('', () => {
   test('add money', async () => {
