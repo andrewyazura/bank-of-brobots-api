@@ -1,6 +1,8 @@
 import userResolver from '../../../src/data/resolvers/userResolver';
 import userModel from '../../../src/models/userModel.js';
 import accountModel from '../../../src/models/accountModel.js';
+import { subscriptions } from '../../../src/config';
+import findUser from '../../../src/services/findUser';
 import findAccount from '../../../src/services/findAccount';
 import setupDB from '../../setupDatabase';
 
@@ -47,5 +49,54 @@ describe('user resolver', () => {
     fromAccount = await findAccount(fromAccount._id);
 
     expect(fromAccount.money).toBe(60);
+  });
+
+  test('changeSubscription endpoint', async () => {
+    const owner = await userModel.create({
+      name: 'John',
+      email: 'john@404.com',
+      password: '123',
+    });
+
+    const account = await accountModel.create({ money: 100, owner }),
+      subs = subscriptions[1];
+
+    const result = {
+      weekLimit: subs.limit,
+      weekLeft: subs.limit,
+      planCost: subs.cost,
+      planName: subs.name,
+    };
+
+    await userResolver.changeSubscription(
+      {
+        subscriptionId: 1,
+        accountId: account._id,
+      },
+      { user: { id: owner._id } },
+    );
+
+    expect((await findUser(owner._id)).toObject()).toMatchObject(result);
+  });
+
+  test('changeSubscription endpoint', async () => {
+    const owner = await userModel.create({
+      name: 'John',
+      email: 'john@404.com',
+      password: '123',
+    });
+
+    const account = await accountModel.create({ money: 100, owner }),
+      subs = subscriptions[1];
+
+    await userResolver.changeSubscription(
+      {
+        subscriptionId: 1,
+        accountId: account._id,
+      },
+      { user: { id: owner._id } },
+    );
+
+    expect((await findAccount(account._id)).money).toBe(100 - subs.cost);
   });
 });
