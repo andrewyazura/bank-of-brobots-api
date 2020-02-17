@@ -15,7 +15,7 @@ describe('findUser', () => {
 
     const obj = await findUser(user._id);
 
-    expect(user.toObject()).toMatchObject(obj.toObject());
+    expect(obj.toObject()).toMatchObject(user.toObject());
   });
 
   test('multiple users', async () => {
@@ -33,7 +33,7 @@ describe('findUser', () => {
 
     const obj = await findUser(user._id);
 
-    expect(user.toObject()).toMatchObject(obj.toObject());
+    expect(obj.toObject()).toMatchObject(user.toObject());
   });
 
   test('fake user', async () => {
