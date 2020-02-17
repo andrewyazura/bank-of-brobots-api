@@ -21,9 +21,7 @@ describe('admin resolver', () => {
 
     const users = await adminResolver.users({}, { user: { id: admin._id } });
 
-    if (users.length > 0) {
-      expect(users[0].toObject()).toMatchObject(admin.toObject());
-    }
+    expect(users[0].toObject()).toMatchObject(admin.toObject());
   });
 
   test('accounts endpoint', async () => {
@@ -46,9 +44,7 @@ describe('admin resolver', () => {
       { user: { id: admin._id } },
     );
 
-    if (accounts.length > 0) {
-      expect(accounts[0].toObject()).toMatchObject(account.toObject());
-    }
+    expect(accounts[0].toObject()).toMatchObject(account.toObject());
   });
 
   test('transactions endpoint', async () => {
@@ -82,9 +78,7 @@ describe('admin resolver', () => {
       { user: { id: admin._id } },
     );
 
-    if (transactions.length > 0) {
-      expect(transactions[0].toObject()).toMatchObject(tr.toObject());
-    }
+    expect(transactions[0].toObject()).toMatchObject(tr.toObject());
   });
 
   test('addMoney endpoint', async () => {

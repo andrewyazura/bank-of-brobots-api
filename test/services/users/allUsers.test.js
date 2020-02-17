@@ -7,20 +7,15 @@ setupDB('all-users-test');
 
 describe('allUsers', () => {
   test('single user', async () => {
-    await userModel.create({
+    const user = await userModel.create({
       name: 'John',
       email: 'john@404.com',
       password: '123',
     });
 
-    const obj = {
-      name: 'John',
-      email: 'john@404.com',
-    };
-
     const users = await allUsers();
 
-    expect(users[0].toObject()).toMatchObject(obj);
+    expect(users[0].toObject()).toMatchObject(user.toObject());
   });
 
   test('multiple users', async () => {
