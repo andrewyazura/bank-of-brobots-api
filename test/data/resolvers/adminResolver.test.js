@@ -9,12 +9,12 @@ setupDB('admin-resolver-test');
 
 describe('admin resolver', () => {
   test('users endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'John Doe';
+    let telegram_id = '51314124';
 
     const admin = await userModel.create({
       name,
-      email,
+      telegram_id,
       password: '123',
       isAdmin: true,
     });
@@ -25,12 +25,12 @@ describe('admin resolver', () => {
   });
 
   test('accounts endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'John Doe';
+    let telegram_id = '51314124';
 
     const admin = await userModel.create({
       name,
-      email,
+      telegram_id,
       password: '123',
       isAdmin: true,
     });
@@ -48,12 +48,12 @@ describe('admin resolver', () => {
   });
 
   test('transactions endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'John Doe';
+    let telegram_id = '51314124';
 
     const admin = await userModel.create({
       name,
-      email,
+      telegram_id,
       password: '123',
       isAdmin: true,
     });
@@ -82,12 +82,12 @@ describe('admin resolver', () => {
   });
 
   test('addMoney endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'John Doe';
+    let telegram_id = '51314124';
 
     const admin = await userModel.create({
       name,
-      email,
+      telegram_id,
       password: '123',
       isAdmin: true,
     });

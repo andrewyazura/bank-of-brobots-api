@@ -5,24 +5,18 @@ import register from '../../services/register';
 import login from '../../services/login';
 import schema from '../../data/schemas';
 import resolvers from '../../data/resolvers';
-import validateEmail from '../../services/validateEmail';
 
 const router = Router();
 
 router.use('/register', async (req, res) => {
   let body = req.body;
 
-  if (!body.name || !body.email || !body.password) {
+  if (!body.name || !body.telegram_id) {
     res.status(400).send({ message: 'Not enough arguments given' });
     return;
   }
 
-  if (!validateEmail(body.email)) {
-    res.status(400).send({ message: 'Invalid email' });
-    return;
-  }
-
-  register(body.name, body.email, body.password)
+  register(body.name, body.telegram_id)
     .then((user) => {
       res.json(user);
     })
@@ -45,10 +39,9 @@ router.use('/register', async (req, res) => {
 router.use('/login', async (req, res) => {
   let body = req.body;
 
-  if (!body.email || !body.password)
-    res.status(400).send({ message: 'Not enough args' });
+  if (!body.telegram_id) res.status(400).send({ message: 'Not enough args' });
 
-  login(body.email, body.password)
+  login(body.telegram_id)
     .then((token) => {
       res.json({ token });
     })

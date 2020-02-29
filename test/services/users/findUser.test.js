@@ -9,8 +9,7 @@ describe('findUser', () => {
   test('single user', async () => {
     const user = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const obj = await findUser(user._id);
@@ -21,14 +20,12 @@ describe('findUser', () => {
   test('multiple users', async () => {
     const user = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     await userModel.create({
       name: 'Jonny',
-      email: 'jonny@404.com',
-      password: '1234',
+      telegram_id: '51983124',
     });
 
     const obj = await findUser(user._id);
@@ -39,8 +36,7 @@ describe('findUser', () => {
   test('fake user', async () => {
     const user = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     await userModel.findByIdAndDelete(user._id);

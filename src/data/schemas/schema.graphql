@@ -2,7 +2,7 @@ type User {
   id: ID!
   isAdmin: Boolean
   name: String!
-  email: String!
+  telegram_id: String!
   accounts: [Account]
   weekLimit: Int
   weekLeft: Int

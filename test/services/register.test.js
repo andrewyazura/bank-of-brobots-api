@@ -6,13 +6,13 @@ setupDB('register-test');
 describe('registration', () => {
   test('new user', async () => {
     let name = 'John Doe';
-    let email = 'john@doe.com';
+    let telegram_id = '51314124';
 
-    const result = await register(name, email, '123');
+    const result = await register(name, telegram_id);
 
     expect(result).toMatchObject({
       name,
-      email,
+      telegram_id,
       isAdmin: false,
       accounts: [],
     });
@@ -20,9 +20,9 @@ describe('registration', () => {
 
   test('duplicate', async () => {
     let name = 'John Doe';
-    let email = 'john@doe.com';
+    let telegram_id = '51314124';
 
-    await register(name, email, '123');
-    await expect(register(name, email, '123')).rejects.toThrow();
+    await register(name, telegram_id);
+    await expect(register(name, telegram_id)).rejects.toThrow();
   });
 });

@@ -10,8 +10,7 @@ describe('findAccount', () => {
   test('single account', async () => {
     const owner = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const acc = await accountModel.create({
@@ -26,8 +25,7 @@ describe('findAccount', () => {
   test('multiple accounts', async () => {
     const owner = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const acc = await accountModel.create({
@@ -46,8 +44,7 @@ describe('findAccount', () => {
   test('fake account', async () => {
     const owner = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const acc = await accountModel.create({

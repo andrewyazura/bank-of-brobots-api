@@ -9,8 +9,7 @@ describe('allUsers', () => {
   test('single user', async () => {
     const user = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const users = await allUsers();
@@ -21,14 +20,12 @@ describe('allUsers', () => {
   test('multiple users', async () => {
     await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     await userModel.create({
       name: 'Jonny',
-      email: 'jonny@404.com',
-      password: '1234',
+      telegram_id: '511234124',
     });
 
     const users = await allUsers();

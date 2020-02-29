@@ -11,12 +11,11 @@ setupDB('user-resolver-test');
 describe('user resolver', () => {
   test('user endpoint', async () => {
     let name = 'John Doe';
-    let email = 'john@doe.com';
+    let telegram_id = '51314124';
 
     const obj = await userModel.create({
       name,
-      email,
-      password: '1234',
+      telegram_id,
     });
 
     const result = await userResolver.user(
@@ -30,8 +29,7 @@ describe('user resolver', () => {
   test('transfer endpoint', async () => {
     let owner = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     let fromAccount = await accountModel.create({ money: 100, owner }),
@@ -54,8 +52,7 @@ describe('user resolver', () => {
   test('changeSubscription endpoint', async () => {
     const owner = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const account = await accountModel.create({ money: 100, owner }),
@@ -82,8 +79,7 @@ describe('user resolver', () => {
   test('changeSubscription endpoint #2', async () => {
     const owner = await userModel.create({
       name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      telegram_id: '51314124',
     });
 
     const account = await accountModel.create({ money: 100, owner }),

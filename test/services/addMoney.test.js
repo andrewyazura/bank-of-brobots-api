@@ -9,13 +9,12 @@ setupDB('add-money-test');
 
 describe('', () => {
   test('add money', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'John Doe';
+    let telegram_id = '51314124';
 
     const admin = await userModel.create({
       name,
-      email,
-      password: '123',
+      telegram_id,
       isAdmin: true,
     });
 
@@ -31,13 +30,12 @@ describe('', () => {
   });
 
   test('remove money', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'John Doe';
+    let telegram_id = '51314124';
 
     const admin = await userModel.create({
       name,
-      email,
-      password: '123',
+      telegram_id,
       isAdmin: true,
     });
 

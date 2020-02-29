@@ -11,8 +11,7 @@ describe('account resolver', () => {
   test('account endpoint', async () => {
     const user = await userModel.create({
       name: 'x',
-      email: 'y',
-      password: 'z',
+      telegram_id: 'y',
     });
 
     const obj = await accountModel.create({
@@ -32,8 +31,7 @@ describe('account resolver', () => {
 
     const user = await userModel.create({
       name: 'x',
-      email: 'y',
-      password: 'z',
+      telegram_id: 'y',
     });
 
     const obj = {
@@ -56,8 +54,7 @@ describe('account resolver', () => {
 
     const user = await userModel.create({
       name: 'x',
-      email: 'y',
-      password: 'z',
+      telegram_id: 'y',
     });
 
     const obj = {
@@ -87,8 +84,7 @@ describe('account resolver', () => {
   test('removeAccount endpoint', async () => {
     const user = await userModel.create({
       name: 'x',
-      email: 'y',
-      password: 'z',
+      telegram_id: 'y',
     });
 
     const obj = await accountModel.create({

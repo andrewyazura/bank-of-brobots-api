@@ -1,14 +1,11 @@
 import userModel from '../models/userModel';
 
-export default async (name, email, password) => {
+export default async (name, telegram_id) => {
   let user = await userModel.create({
     name,
-    email,
-    password,
+    telegram_id,
   });
 
   user = user.toObject();
-  delete user.password;
-
   return user;
 };

@@ -6,17 +6,16 @@ setupDB('user-model-test');
 describe('user model', () => {
   test('create', async () => {
     let name = 'John Doe';
-    let email = 'john@doe.com';
+    let telegram_id = '51314124';
 
     const obj = await userModel.create({
       name,
-      email,
-      password: '1234',
+      telegram_id,
     });
 
     const expected = {
       name,
-      email,
+      telegram_id,
       isAdmin: false,
       accounts: [],
     };

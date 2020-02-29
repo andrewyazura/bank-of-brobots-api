@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -7,11 +6,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  email: {
+  telegram_id: {
     type: String,
     required: true,
     unique: true,
@@ -42,13 +37,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'Free',
   },
-});
-
-userSchema.pre('save', function() {
-  if (!this.isModified('password')) return;
-
-  const hashedPassword = bcrypt.hashSync(this.password, 10);
-  this.password = hashedPassword;
 });
 
 const user = mongoose.model('User', userSchema);
