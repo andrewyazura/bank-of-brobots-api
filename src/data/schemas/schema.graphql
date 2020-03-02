@@ -3,25 +3,18 @@ type User {
   isAdmin: Boolean
   name: String!
   telegram_id: String!
-  accounts: [Account]
+  money: Int
   weekLimit: Int
   weekLeft: Int
   planCost: Int
   planName: String
-}
-
-type Account {
-  id: ID!
-  customName: String
-  money: Int
-  owner: User!
   transactions: [Transaction]
 }
 
 type Transaction {
   id: ID!
-  fromAccount: Account!
-  toAccount: Account!
+  fromUser: User!
+  toUser: User!
   money: Int!
 }
 
@@ -35,9 +28,6 @@ type Query {
   user(id: ID!): User!
   users: [User]
 
-  account(id: ID!): Account!
-  accounts: [Account]
-
   transactions: [Transaction]
 
   subscriptions: [Subscription]
@@ -45,13 +35,9 @@ type Query {
 
 type Mutation {
   createUser(name: String!, email: String!, password: String!): User!
-  transfer(from_account_id: ID!, to_account_id: ID!, money: Int!): Transaction!
+  transfer(from_user_id: ID!, to_user_id: ID!, money: Int!): Transaction!
 
-  createAccount(customName: String): Account!
-  changeAccountName(accountId: ID!, newCustomName: String): Account!
-  removeAccount(accountId: ID!): Boolean
+  addMoney(userId: ID!, money: Int): Boolean
 
-  addMoney(accountId: ID!, money: Int): Boolean
-
-  changeSubscription(subscriptionId: Int, accountId: ID!): Subscription
+  changeSubscription(subscriptionId: Int, userId: ID!): Subscription
 }

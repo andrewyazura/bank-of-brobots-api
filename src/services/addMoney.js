@@ -1,12 +1,12 @@
-import findAccount from './accounts/findAccount';
+import findUser from '../services/users/findUser';
 
-export default async (accountId, money) => {
-  const account = await findAccount(accountId);
+export default async (userId, money) => {
+  const user = await findUser(userId);
 
-  if (money < 0 && account.money < Math.abs(money)) return false;
+  if (money < 0 && user.money < Math.abs(money)) return false;
 
-  account.money += money;
-  await account.save();
+  user.money += money;
+  await user.save();
 
   return true;
 };
