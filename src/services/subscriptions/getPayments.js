@@ -7,21 +7,20 @@ export default async () => {
   let payed = 0;
 
   for (let user of users) {
-    for (let account of user.accounts) {
-      if (await addMoney(account, -user.planCost)) {
-        ++payed;
-        break;
-      }
-
-      if (!payed) {
-        userResolver.changeSubscription(
-          { subscriptionId: 0, accountId: user.accounts[0].id },
-          {
-            user: { id: user._id },
-          },
-        );
-      }
+    if (await addMoney(user._id, -user.planCost)) {
+      ++payed;
+      break;
     }
+
+    if (!payed) {
+      userResolver.changeSubscription(
+        { subscriptionId: 0, userId: user._id },
+        {
+          user: { id: user._id },
+        },
+      );
+    }
+    payed = 0;
   }
 
   return true;

@@ -5,10 +5,9 @@
   "repository": "https://github.com/andrew4ever/bank-of-brobots-api.git",
   "author": "andrew4ever <andrewyazura203@gmail.com>",
   "license": "GNU General Public License v3.0",
-  "private": true,
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "build": "babel src --out-file compiled.js",
     "buildDir": "babel src --out-dir build"
   },

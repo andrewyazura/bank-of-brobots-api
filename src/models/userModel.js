@@ -15,12 +15,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  accounts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Account',
-    },
-  ],
+  money: {
+    type: Number,
+    default: 0,
+  },
   weekLimit: {
     type: Number,
     default: 40,
@@ -37,6 +35,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'Free',
   },
+  transactions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Transaction',
+    },
+  ],
 });
 
 const user = mongoose.model('User', userSchema);
