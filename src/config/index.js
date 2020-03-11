@@ -29,18 +29,23 @@ const dbConnectConf = {
 const subscriptions = [
   {
     name: 'Free',
-    limit: 40,
+    limit: 100,
     cost: 0,
   },
   {
     name: 'Basic',
-    limit: 60,
+    limit: 150,
     cost: 10,
   },
   {
     name: 'Premium',
     limit: null,
     cost: 30,
+  },
+  {
+    name: 'Admin',
+    limit: null,
+    cost: 0,
   },
 ];
 
