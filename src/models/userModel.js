@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import { subscriptions } from '../config';
+
+let sub = subscriptions[0];
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -21,19 +24,19 @@ const userSchema = new mongoose.Schema({
   },
   weekLimit: {
     type: Number,
-    default: 40,
+    default: sub['limit'],
   },
   weekLeft: {
     type: Number,
-    default: 40,
+    default: sub['limit'],
   },
   planCost: {
     type: Number,
-    default: 0,
+    default: sub['cost'],
   },
   planName: {
     type: String,
-    default: 'Free',
+    default: sub['name'],
   },
   transactions: [
     {
