@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const expConf = {
-  port: process.env.EXPRESS_PORT || '8080',
+  port: process.env.EXPRESS_PORT || '8000',
 };
 
 const corsConf = {
