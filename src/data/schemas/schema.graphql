@@ -19,6 +19,7 @@ type Transaction {
 }
 
 type Subscription {
+  id: Int!
   name: String!
   cost: Int
   limit: Int
