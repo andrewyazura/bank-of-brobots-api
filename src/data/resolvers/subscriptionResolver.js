@@ -2,7 +2,7 @@ import { subscriptions } from '../../config';
 
 const subscriptionResolver = {
   subscriptions: async (args, request) => {
-    subscriptions.pop();
+    subscriptions.slice(0, -1);
     return subscriptions;
   },
 };
