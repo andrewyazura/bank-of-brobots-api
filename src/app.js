@@ -28,7 +28,7 @@ let server = app.listen(expConf['port'], () => {
   console.log('Listening on port: ' + server.address().port);
   connectDatabase();
 
-  let update = scheduler.scheduleJob('0 0 0 * * 0', async () => {
+  let update = scheduler.scheduleJob('0 0 0 * * 1', async () => {
     await updateLimits();
   });
 
