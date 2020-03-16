@@ -52,6 +52,8 @@ const userResolver = {
 
     if (request.user.id != user.id) throw new Error('Wrong user ID');
 
+    if (user.isAdmin) throw new Error("Admins can't change their plan!");
+
     if (subscription) {
       if (await addMoney(userId, -subscription.cost)) {
         user.weekLimit = subscription.limit;
