@@ -15,6 +15,8 @@ export default async () => {
       );
     }
 
+    if (user.planCost == 0) continue;
+
     if (await addMoney(user._id, -user.planCost, 'Monthly fee')) {
       continue;
     }

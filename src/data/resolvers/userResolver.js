@@ -64,6 +64,7 @@ const userResolver = {
         user.weekLeft = subscription.limit;
         user.planCost = subscription.cost;
         user.planName = subscription.name;
+        user.planId = subscriptionId;
       } else throw new Error('Not enough money');
     } else throw new Error('No such subscription');
 

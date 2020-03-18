@@ -14,7 +14,7 @@ type User {
 type Transaction {
   id: ID!
   fromUser: User!
-  toUser: User!
+  toUser: User
   money: Int!
   message: String
 }
