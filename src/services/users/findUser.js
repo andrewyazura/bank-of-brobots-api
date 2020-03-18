@@ -3,11 +3,17 @@ import userModel from '../../models/userModel';
 export default async (id) => {
   const user = await userModel
     .findById(id)
-    .populate('accounts')
+    .populate('transactions')
     .populate({
-      path: 'accounts',
+      path: 'transactions',
       populate: {
-        path: 'transactions',
+        path: 'fromUser',
+      },
+    })
+    .populate({
+      path: 'transactions',
+      populate: {
+        path: 'toUser',
       },
     })
     .exec();

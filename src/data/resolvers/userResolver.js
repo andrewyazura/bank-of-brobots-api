@@ -1,6 +1,5 @@
 import { subscriptions } from '../../config';
 import transactionModel from '../../models/transactionModel';
-import findAccount from '../../services/accounts/findAccount';
 import addMoney from '../../services/addMoney';
 import findUser from '../../services/users/findUser';
 
@@ -14,49 +13,49 @@ const userResolver = {
     return user;
   },
 
-  transfer: async ({ from_account_id, to_account_id, money }, request) => {
-    const account1 = await findAccount(from_account_id);
-    const account2 = await findAccount(to_account_id);
+  transfer: async ({ from_user_id, to_user_id, money }, request) => {
+    const user1 = await findUser(from_user_id);
+    const user2 = await findUser(to_user_id);
     const user = await findUser(request.user.id);
 
-    if (user.id != account1.owner.id)
-      throw new Error("Account isn't owned by the user");
+    if (user._id != from_user_id) throw new Error('Wrong user ID');
 
-    if (money > account1.money) throw new Error('Not enough money on account');
+    if (money > user1.money) throw new Error('Sender has not enough money');
     if (user.weekLeft !== null) {
-      if (money > user.weekLeft) throw new Error("It's over your week limit");
+      if (money > user.weekLeft)
+        throw new Error("It's over sender's week limit");
       user.weekLeft -= money;
     }
 
     const transaction = await transactionModel.create({
-      fromAccount: from_account_id,
-      toAccount: to_account_id,
+      fromUser: from_user_id,
+      toUser: to_user_id,
       money,
     });
 
-    account1.transactions.push(transaction);
-    account2.transactions.push(transaction);
+    user1.transactions.push(transaction);
+    user2.transactions.push(transaction);
 
-    account1.money -= money;
-    account2.money += money;
+    user1.money -= money;
+    user2.money += money;
 
     await user.save();
-    await account1.save();
-    await account2.save();
+    await user1.save();
+    await user2.save();
 
     return transaction;
   },
 
-  changeSubscription: async ({ subscriptionId, accountId }, request) => {
+  changeSubscription: async ({ subscriptionId, userId }, request) => {
     const subscription = subscriptions[subscriptionId] || null;
     const user = await findUser(request.user.id);
-    const account = await findAccount(accountId);
 
-    if (request.user.id != account.owner.id)
-      throw new Error("Account isn't owned by the user");
+    if (request.user.id != user.id) throw new Error('Wrong user ID');
+
+    if (user.isAdmin) throw new Error("Admins can't change their plan!");
 
     if (subscription) {
-      if (await addMoney(accountId, -subscription.cost)) {
+      if (await addMoney(userId, -subscription.cost)) {
         user.weekLimit = subscription.limit;
         user.weekLeft = subscription.limit;
         user.planCost = subscription.cost;
