@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: sub['name'],
   },
+  planId: {
+    type: Number,
+    default: 0,
+  },
   transactions: [
     {
       type: mongoose.Schema.Types.ObjectId,
