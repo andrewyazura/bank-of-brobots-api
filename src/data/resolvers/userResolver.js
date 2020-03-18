@@ -13,7 +13,10 @@ const userResolver = {
     return user;
   },
 
-  transfer: async ({ from_user_id, to_user_id, money }, request) => {
+  transfer: async (
+    { from_user_id, to_user_id, money, message = '' },
+    request,
+  ) => {
     const user1 = await findUser(from_user_id);
     const user2 = await findUser(to_user_id);
     const user = await findUser(request.user.id);
@@ -31,6 +34,7 @@ const userResolver = {
       fromUser: from_user_id,
       toUser: to_user_id,
       money,
+      message,
     });
 
     user1.transactions.push(transaction);

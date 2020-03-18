@@ -16,6 +16,7 @@ type Transaction {
   fromUser: User!
   toUser: User!
   money: Int!
+  message: String
 }
 
 type Subscription {
@@ -36,9 +37,14 @@ type Query {
 
 type Mutation {
   createUser(name: String!, email: String!, password: String!): User!
-  transfer(from_user_id: ID!, to_user_id: ID!, money: Int!): Transaction!
+  transfer(
+    from_user_id: ID!
+    to_user_id: ID!
+    money: Int!
+    message: String
+  ): Transaction!
 
-  addMoney(userId: ID!, money: Int): Boolean
+  addMoney(userId: ID!, money: Int, message: String): Boolean
 
   changeSubscription(subscriptionId: Int, userId: ID!): Subscription
 }

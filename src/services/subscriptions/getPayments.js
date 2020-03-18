@@ -7,7 +7,7 @@ export default async () => {
   let payed = 0;
 
   for (let user of users) {
-    if (await addMoney(user._id, -user.planCost)) {
+    if (await addMoney(user._id, -user.planCost, 'Monthly fee')) {
       ++payed;
       break;
     }

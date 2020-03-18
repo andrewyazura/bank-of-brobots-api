@@ -9,11 +9,13 @@ const transactionSchema = new mongoose.Schema({
   toUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   },
   money: {
     type: Number,
     required: true,
+  },
+  message: {
+    type: String,
   },
 });
 

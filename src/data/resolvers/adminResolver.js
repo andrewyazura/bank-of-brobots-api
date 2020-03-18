@@ -23,12 +23,12 @@ const adminResolver = {
     return transactions;
   },
 
-  addMoney: async ({ userId, money }, request) => {
+  addMoney: async ({ userId, money, message }, request) => {
     const user = await findUser(request.user.id);
 
     if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
 
-    return await addMoney(userId, money);
+    return await addMoney(userId, money, message);
   },
 };
 
