@@ -1,6 +1,5 @@
 import allTransactions from '../../src/services/allTransactions';
 import userModel from '../../src/models/userModel.js';
-import accountModel from '../../src/models/accountModel.js';
 import transactionModel from '../../src/models/transactionModel';
 import setupDB from '../setupDatabase';
 
@@ -8,29 +7,21 @@ setupDB('all-transactions-test');
 
 describe('allTransactions', () => {
   test('single transaction', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
-
-    const admin = await userModel.create({
-      name,
-      email,
-      password: '123',
-      isAdmin: true,
+    const fromUser = await userModel.create({
+      name: 'x',
+      telegram_id: '01234567890',
+      money: 100,
     });
 
-    const acc1 = await accountModel.create({
-      owner: admin,
-      money: 500,
-    });
-
-    const acc2 = await accountModel.create({
-      owner: admin,
+    const toUser = await userModel.create({
+      name: 'y',
+      telegram_id: '11234567890',
     });
 
     const tr = await transactionModel.create({
-      fromAccount: acc1,
-      toAccount: acc2,
-      money: 500,
+      fromUser,
+      toUser,
+      money: 100,
     });
 
     const transactions = await allTransactions();
@@ -39,35 +30,27 @@ describe('allTransactions', () => {
   });
 
   test('multiple transactions', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
-
-    const admin = await userModel.create({
-      name,
-      email,
-      password: '123',
-      isAdmin: true,
-    });
-
-    const acc1 = await accountModel.create({
-      owner: admin,
-      money: 500,
-    });
-
-    const acc2 = await accountModel.create({
-      owner: admin,
-    });
-
-    await transactionModel.create({
-      fromAccount: acc1,
-      toAccount: acc2,
-      money: 500,
-    });
-
-    await transactionModel.create({
-      fromAccount: acc2,
-      toAccount: acc1,
+    const fromUser = await userModel.create({
+      name: 'x',
+      telegram_id: '01234567890',
       money: 100,
+    });
+
+    const toUser = await userModel.create({
+      name: 'y',
+      telegram_id: '11234567890',
+    });
+
+    await transactionModel.create({
+      fromUser,
+      toUser,
+      money: 50,
+    });
+
+    await transactionModel.create({
+      fromUser,
+      toUser,
+      money: 50,
     });
 
     const transactions = await allTransactions();

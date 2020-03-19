@@ -1,4 +1,4 @@
-import accountModel from '../../../src/models/accountModel.js';
+import transactionModel from '../../../src/models/transactionModel';
 import allUsers from '../../../src/services/users/allUsers';
 import userModel from '../../../src/models/userModel.js';
 import setupDB from '../../setupDatabase';
@@ -8,9 +8,8 @@ setupDB('all-users-test');
 describe('allUsers', () => {
   test('single user', async () => {
     const user = await userModel.create({
-      name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      name: 'x',
+      telegram_id: '01234567890',
     });
 
     const users = await allUsers();
@@ -20,15 +19,13 @@ describe('allUsers', () => {
 
   test('multiple users', async () => {
     await userModel.create({
-      name: 'John',
-      email: 'john@404.com',
-      password: '123',
+      name: 'x',
+      telegram_id: '01234567890',
     });
 
     await userModel.create({
-      name: 'Jonny',
-      email: 'jonny@404.com',
-      password: '1234',
+      name: 'y',
+      telegram_id: '11234567890',
     });
 
     const users = await allUsers();

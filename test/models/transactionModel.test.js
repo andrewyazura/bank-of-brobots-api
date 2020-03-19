@@ -1,4 +1,4 @@
-import accountModel from '../../src/models/accountModel.js';
+import userModel from '../../src/models/userModel.js';
 import transactionModel from '../../src/models/transactionModel.js';
 import setupDB from '../setupDatabase';
 
@@ -6,20 +6,20 @@ setupDB('transaction-model-test');
 
 describe('transaction model', () => {
   test('create', async () => {
-    let fromAccount = await accountModel.create({}),
-      toAccount = await accountModel.create({});
+    let fromUser = await userModel({ name: 'x', telegram_id: '01234567890' }),
+      toUser = await userModel({ name: 'y', telegram_id: '11234567890' });
 
     let money = 5000;
 
     const obj = await transactionModel.create({
-      fromAccount,
-      toAccount,
+      fromUser,
+      toUser,
       money,
     });
 
     const expected = {
-      fromAccount: fromAccount.toObject(),
-      toAccount: toAccount.toObject(),
+      fromUser: fromUser.toObject(),
+      toUser: toUser.toObject(),
       money,
     };
 

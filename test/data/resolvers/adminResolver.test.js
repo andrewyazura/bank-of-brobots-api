@@ -1,21 +1,19 @@
 import adminResolver from '../../../src/data/resolvers/adminResolver';
 import transactionModel from '../../../src/models/transactionModel';
 import userModel from '../../../src/models/userModel.js';
-import accountModel from '../../../src/models/accountModel.js';
-import findAccount from '../../../src/services/accounts/findAccount';
 import setupDB from '../../setupDatabase';
+import findUser from '../../../src/services/users/findUser';
 
 setupDB('admin-resolver-test');
 
 describe('admin resolver', () => {
   test('users endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'x',
+      telegram_id = '01234567890';
 
     const admin = await userModel.create({
       name,
-      email,
-      password: '123',
+      telegram_id,
       isAdmin: true,
     });
 
@@ -24,52 +22,18 @@ describe('admin resolver', () => {
     expect(users[0].toObject()).toMatchObject(admin.toObject());
   });
 
-  test('accounts endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
-
-    const admin = await userModel.create({
-      name,
-      email,
-      password: '123',
-      isAdmin: true,
-    });
-
-    const account = await accountModel.create({
-      owner: admin,
-    });
-
-    const accounts = await adminResolver.accounts(
-      {},
-      { user: { id: admin._id } },
-    );
-
-    expect(accounts[0].toObject()).toMatchObject(account.toObject());
-  });
-
   test('transactions endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'x',
+      telegram_id = '01234567890';
 
     const admin = await userModel.create({
       name,
-      email,
-      password: '123',
+      telegram_id,
       isAdmin: true,
     });
 
-    const acc1 = await accountModel.create({
-      owner: admin,
-      money: 500,
-    });
-
-    const acc2 = await accountModel.create({
-      owner: admin,
-    });
-
-    const tr = await transactionModel.create({
-      fromAccount: acc1,
-      toAccount: acc2,
+    await transactionModel.create({
+      fromUser: admin._id,
       money: 500,
     });
 
@@ -78,31 +42,28 @@ describe('admin resolver', () => {
       { user: { id: admin._id } },
     );
 
-    expect(transactions[0].toObject()).toMatchObject(tr.toObject());
+    let result = transactions[0].fromUser.toObject();
+
+    expect(result).toMatchObject(admin.toObject());
   });
 
   test('addMoney endpoint', async () => {
-    let name = 'John Doe',
-      email = 'john@doe.com';
+    let name = 'x',
+      telegram_id = '01234567890';
 
-    const admin = await userModel.create({
+    let admin = await userModel.create({
       name,
-      email,
-      password: '123',
+      telegram_id,
       isAdmin: true,
     });
 
-    let acc1 = await accountModel.create({
-      owner: admin,
-    });
-
     await adminResolver.addMoney(
-      { accountId: acc1._id, money: 500 },
+      { userId: admin._id, money: 500 },
       { user: { id: admin._id } },
     );
 
-    acc1 = await findAccount(acc1._id);
+    admin = await findUser(admin._id);
 
-    expect(acc1.money).toBe(500);
+    expect(admin.money).toBe(500);
   });
 });

@@ -1,19 +1,21 @@
 import mongoose from 'mongoose';
 
 const transactionSchema = new mongoose.Schema({
-  fromAccount: {
+  fromUser: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Account',
+    ref: 'User',
     required: true,
   },
-  toAccount: {
+  toUser: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Account',
-    required: true,
+    ref: 'User',
   },
   money: {
     type: Number,
     required: true,
+  },
+  message: {
+    type: String,
   },
 });
 

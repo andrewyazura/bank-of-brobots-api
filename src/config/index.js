@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const expConf = {
-  port: process.env.EXPRESS_PORT || '8080',
+  port: process.env.EXPRESS_PORT || '8000',
 };
 
 const corsConf = {
@@ -28,19 +28,28 @@ const dbConnectConf = {
 
 const subscriptions = [
   {
+    id: 0,
     name: 'Free',
-    limit: 40,
+    limit: 100,
     cost: 0,
   },
   {
+    id: 1,
     name: 'Basic',
-    limit: 60,
+    limit: 180,
     cost: 10,
   },
   {
+    id: 2,
     name: 'Premium',
     limit: null,
     cost: 30,
+  },
+  {
+    id: 100,
+    name: 'Admin',
+    limit: null,
+    cost: 0,
   },
 ];
 

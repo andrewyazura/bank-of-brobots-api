@@ -1,5 +1,7 @@
-import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
+import { subscriptions } from '../config';
+
+let sub = subscriptions[0];
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -7,11 +9,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  email: {
+  telegram_id: {
     type: String,
     required: true,
     unique: true,
@@ -20,35 +18,36 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  accounts: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Account',
-    },
-  ],
-  weekLimit: {
-    type: Number,
-    default: 40,
-  },
-  weekLeft: {
-    type: Number,
-    default: 40,
-  },
-  planCost: {
+  money: {
     type: Number,
     default: 0,
   },
+  weekLimit: {
+    type: Number,
+    default: sub['limit'],
+  },
+  weekLeft: {
+    type: Number,
+    default: sub['limit'],
+  },
+  planCost: {
+    type: Number,
+    default: sub['cost'],
+  },
   planName: {
     type: String,
-    default: 'Free',
+    default: sub['name'],
   },
-});
-
-userSchema.pre('save', function() {
-  if (!this.isModified('password')) return;
-
-  const hashedPassword = bcrypt.hashSync(this.password, 10);
-  this.password = hashedPassword;
+  planId: {
+    type: Number,
+    default: 0,
+  },
+  transactions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Transaction',
+    },
+  ],
 });
 
 const user = mongoose.model('User', userSchema);

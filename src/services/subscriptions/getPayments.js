@@ -4,24 +4,29 @@ import allUsers from '../users/allUsers';
 
 export default async () => {
   const users = await allUsers();
-  let payed = 0;
 
   for (let user of users) {
-    for (let account of user.accounts) {
-      if (await addMoney(account, -user.planCost)) {
-        ++payed;
-        break;
-      }
-
-      if (!payed) {
-        userResolver.changeSubscription(
-          { subscriptionId: 0, accountId: user.accounts[0].id },
-          {
-            user: { id: user._id },
-          },
-        );
-      }
+    if (user.isAdmin) {
+      userResolver.changeSubscription(
+        { subscriptionId: 3, userId: user._id },
+        {
+          user: { id: user._id },
+        },
+      );
     }
+
+    if (user.planCost == 0) continue;
+
+    if (await addMoney(user._id, -user.planCost, 'Monthly fee')) {
+      continue;
+    }
+
+    userResolver.changeSubscription(
+      { subscriptionId: 0, userId: user._id },
+      {
+        user: { id: user._id },
+      },
+    );
   }
 
   return true;

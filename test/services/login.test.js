@@ -6,19 +6,19 @@ setupDB('login-test');
 
 describe('login', () => {
   test('existing user', async () => {
-    let name = 'John Doe';
-    let email = 'john@doe.com';
+    let name = 'x';
+    let telegram_id = '01234567890';
 
-    await register(name, email, '123');
+    await register(name, telegram_id);
 
-    const result = await login(email, '123');
+    const result = await login(telegram_id);
 
     expect(typeof result).toBe('string');
   });
 
   test('fake user', async () => {
-    let email = 'andrew@404.com';
+    let telegram_id = '01234567890';
 
-    await expect(login(email, '123')).rejects.toThrow();
+    await expect(login(telegram_id)).rejects.toThrow();
   });
 });

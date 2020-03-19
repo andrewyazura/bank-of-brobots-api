@@ -1,12 +1,20 @@
-import findAccount from './accounts/findAccount';
+import findUser from '../services/users/findUser';
+import transactionModel from '../models/transactionModel';
 
-export default async (accountId, money) => {
-  const account = await findAccount(accountId);
+export default async (userId, money, message = '') => {
+  const user = await findUser(userId);
 
-  if (money < 0 && account.money < Math.abs(money)) return false;
+  const transaction = await transactionModel.create({
+    fromUser: user._id,
+    money,
+    message,
+  });
 
-  account.money += money;
-  await account.save();
+  if (money < 0 && user.money < Math.abs(money)) return false;
+
+  user.transactions.push(transaction);
+  user.money += money;
+  await user.save();
 
   return true;
 };

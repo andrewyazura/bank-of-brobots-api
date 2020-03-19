@@ -1,22 +1,19 @@
 import userResolver from '../../../src/data/resolvers/userResolver';
 import userModel from '../../../src/models/userModel.js';
-import accountModel from '../../../src/models/accountModel.js';
 import { subscriptions } from '../../../src/config';
 import findUser from '../../../src/services/users/findUser';
-import findAccount from '../../../src/services/accounts/findAccount';
 import setupDB from '../../setupDatabase';
 
 setupDB('user-resolver-test');
 
 describe('user resolver', () => {
   test('user endpoint', async () => {
-    let name = 'John Doe';
-    let email = 'john@doe.com';
+    let name = 'x';
+    let telegram_id = '01234567890';
 
     const obj = await userModel.create({
       name,
-      email,
-      password: '1234',
+      telegram_id,
     });
 
     const result = await userResolver.user(
@@ -28,75 +25,48 @@ describe('user resolver', () => {
   });
 
   test('transfer endpoint', async () => {
-    let owner = await userModel.create({
-      name: 'John',
-      email: 'john@404.com',
-      password: '123',
-    });
-
-    let fromAccount = await accountModel.create({ money: 100, owner }),
-      toAccount = await accountModel.create({});
+    let fromUser = await userModel.create({
+        name: 'x',
+        telegram_id: '01234567890',
+        money: 10,
+      }),
+      toUser = await userModel.create({
+        name: 'y',
+        telegram_id: '11234567890',
+      });
 
     await userResolver.transfer(
       {
-        from_account_id: fromAccount._id,
-        to_account_id: toAccount._id,
-        money: 40,
+        from_user_id: fromUser._id,
+        to_user_id: toUser._id,
+        money: 10,
       },
-      { user: { id: owner._id } },
+      { user: { id: fromUser._id } },
     );
 
-    fromAccount = await findAccount(fromAccount._id);
+    fromUser = await findUser(fromUser._id);
 
-    expect(fromAccount.money).toBe(60);
+    expect(fromUser.money).toBe(0);
   });
 
   test('changeSubscription endpoint', async () => {
-    const owner = await userModel.create({
-      name: 'John',
-      email: 'john@404.com',
-      password: '123',
-    });
-
-    const account = await accountModel.create({ money: 100, owner }),
-      subs = subscriptions[1];
-
-    const result = {
-      weekLimit: subs.limit,
-      weekLeft: subs.limit,
-      planCost: subs.cost,
-      planName: subs.name,
-    };
+    let user = await userModel.create({
+        name: 'x',
+        telegram_id: '01234567890',
+        money: 10,
+      }),
+      subscriptionId = 1;
 
     await userResolver.changeSubscription(
       {
-        subscriptionId: 1,
-        accountId: account._id,
+        subscriptionId,
+        userId: user._id,
       },
-      { user: { id: owner._id } },
+      { user: { id: user._id } },
     );
 
-    expect((await findUser(owner._id)).toObject()).toMatchObject(result);
-  });
+    user = await findUser(user._id);
 
-  test('changeSubscription endpoint #2', async () => {
-    const owner = await userModel.create({
-      name: 'John',
-      email: 'john@404.com',
-      password: '123',
-    });
-
-    const account = await accountModel.create({ money: 100, owner }),
-      subs = subscriptions[1];
-
-    await userResolver.changeSubscription(
-      {
-        subscriptionId: 1,
-        accountId: account._id,
-      },
-      { user: { id: owner._id } },
-    );
-
-    expect((await findAccount(account._id)).money).toBe(100 - subs.cost);
+    expect(user.planId).toBe(subscriptionId);
   });
 });
