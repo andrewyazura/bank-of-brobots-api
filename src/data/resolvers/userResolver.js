@@ -19,15 +19,15 @@ const userResolver = {
   ) => {
     const user1 = await findUser(from_user_id);
     const user2 = await findUser(to_user_id);
-    const user = await findUser(request.user.id);
 
-    if (user._id != from_user_id) throw new Error('Wrong user ID');
+    if (request.user.id != from_user_id) throw new Error('Wrong user ID');
 
     if (money > user1.money) throw new Error('Sender has not enough money');
-    if (user.weekLeft !== null) {
-      if (money > user.weekLeft)
+
+    if (user1.weekLeft !== null) {
+      if (money > user1.weekLeft)
         throw new Error("It's over sender's week limit");
-      user.weekLeft -= money;
+      user1.weekLeft -= money;
     }
 
     const transaction = await transactionModel.create({
@@ -43,7 +43,6 @@ const userResolver = {
     user1.money -= money;
     user2.money += money;
 
-    await user.save();
     await user1.save();
     await user2.save();
 
