@@ -19,7 +19,7 @@
     "babel-jest": "^24.9.0",
     "babel-jest": "^25.5.1",
     "jest": "^25.5.4",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.4"
   },
   "dependencies": {
     "bcrypt": "^3.0.8",
