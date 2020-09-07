@@ -48,25 +48,4 @@ describe('user resolver', () => {
 
     expect(fromUser.money).toBe(0);
   });
-
-  test('changeSubscription endpoint', async () => {
-    let user = await userModel.create({
-        name: 'x',
-        telegram_id: '01234567890',
-        money: 10,
-      }),
-      subscriptionId = 1;
-
-    await userResolver.changeSubscription(
-      {
-        subscriptionId,
-        userId: user._id,
-      },
-      { user: { id: user._id } },
-    );
-
-    user = await findUser(user._id);
-
-    expect(user.planId).toBe(subscriptionId);
-  });
 });

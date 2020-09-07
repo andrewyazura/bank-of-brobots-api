@@ -2,7 +2,6 @@ import { Router } from 'express';
 import graphqlHTTP from 'express-graphql';
 
 import register from '../../services/register';
-import login from '../../services/login';
 import schema from '../../data/schemas';
 import resolvers from '../../data/resolvers';
 
@@ -33,20 +32,6 @@ router.use('/register', async (req, res) => {
           message: 'Unknown error occurred',
         });
       }
-    });
-});
-
-router.use('/login', async (req, res) => {
-  let body = req.body;
-
-  if (!body.telegram_id) res.status(400).send({ message: 'Not enough args' });
-
-  login(body.telegram_id)
-    .then((token) => {
-      res.json({ token });
-    })
-    .catch((err) => {
-      res.status(400).send({ message: 'Invalid credentials' });
     });
 });
 

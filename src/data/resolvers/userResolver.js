@@ -48,29 +48,6 @@ const userResolver = {
 
     return transaction;
   },
-
-  changeSubscription: async ({ subscriptionId, userId }, request) => {
-    const subscription = subscriptions[subscriptionId] || null;
-    const user = await findUser(request.user.id);
-
-    if (request.user.id != user.id) throw new Error('Wrong user ID');
-
-    if (user.isAdmin) throw new Error("Admins can't change their plan!");
-
-    if (subscription) {
-      if (await addMoney(userId, -subscription.cost)) {
-        user.weekLimit = subscription.limit;
-        user.weekLeft = subscription.limit;
-        user.planCost = subscription.cost;
-        user.planName = subscription.name;
-        user.planId = subscriptionId;
-      } else throw new Error('Not enough money');
-    } else throw new Error('No such subscription');
-
-    await user.save();
-
-    return subscription;
-  },
 };
 
 export default userResolver;
