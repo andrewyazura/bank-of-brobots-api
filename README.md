@@ -4,7 +4,7 @@
 
 ## Description
 
-API for first #brobots bank. Bank's currency is **Brobocoin**.
+API for first #brobots bank. Bank's currency is **brocoin**.
 
 ## Stack
 
