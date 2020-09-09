@@ -19,7 +19,7 @@ type Query {
   user(id: ID!): User!
   users: [User]
 
-  userIdToTelegram(telegram_id: ID!): ID!
+  telegramToUserId(telegram_id: ID!): ID!
 
   transactions: [Transaction]
 }

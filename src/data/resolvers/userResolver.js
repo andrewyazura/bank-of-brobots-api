@@ -11,7 +11,7 @@ const userResolver = {
     return user;
   },
 
-  userIdToTelegram: async ({ telegram_id }, request) => {
+  telegramToUserId: async ({ telegram_id }, request) => {
     if (request.user.telegram_id != telegram_id)
       throw new Error("User can't see other users' data");
 
