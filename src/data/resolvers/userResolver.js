@@ -1,6 +1,4 @@
-import { subscriptions } from '../../config';
 import transactionModel from '../../models/transactionModel';
-import addMoney from '../../services/addMoney';
 import findUser from '../../services/users/findUser';
 
 const userResolver = {
