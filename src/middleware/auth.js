@@ -10,7 +10,5 @@ export default async (req, res, next) => {
     req.user = await findUser(headers['id']);
   }
 
-  console.log(req.user);
-
   next();
 };
