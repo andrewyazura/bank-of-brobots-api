@@ -31,7 +31,7 @@
     "graphql": "^14.6.0",
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.25"
+    "mongoose": "^5.10.3"
   },
   "jest": {
     "testEnvironment": "node"
