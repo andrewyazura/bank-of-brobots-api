@@ -32,8 +32,8 @@ const userResolver = {
     if (money > user1.money) throw new Error('Sender has not enough money');
 
     const transaction = await transactionModel.create({
-      fromUser: from_user_id,
-      toUser: to_user_id,
+      fromUser: user1,
+      toUser: user2,
       money,
       message,
     });
