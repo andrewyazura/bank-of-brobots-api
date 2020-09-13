@@ -9,10 +9,12 @@ describe('addMoney', () => {
   test('add money', async () => {
     let name = 'x';
     let telegram_id = '01234567890';
+    let username = 'xxx';
 
     const admin = await userModel.create({
       name,
       telegram_id,
+      username,
       is_admin: true,
     });
 
@@ -24,12 +26,14 @@ describe('addMoney', () => {
   });
 
   test('remove money', async () => {
-    let name = 'x',
-      telegram_id = '01234567890';
+    let name = 'x';
+    let telegram_id = '01234567890';
+    let username = 'xxx';
 
     const admin = await userModel.create({
       name,
       telegram_id,
+      username,
       is_admin: true,
       money: 1000,
     });
