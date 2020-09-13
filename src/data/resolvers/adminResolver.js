@@ -7,7 +7,7 @@ const adminResolver = {
   users: async (args, request) => {
     const user = await findUser(request.user.id);
 
-    if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
+    if (!user.is_admin) throw new Error('Only admins can use this endpoint');
 
     const users = await allUsers();
 
@@ -17,7 +17,7 @@ const adminResolver = {
   transactions: async (args, request) => {
     const user = await findUser(request.user.id);
 
-    if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
+    if (!user.is_admin) throw new Error('Only admins can use this endpoint');
 
     const transactions = await allTransactions();
     return transactions;
@@ -26,7 +26,7 @@ const adminResolver = {
   addMoney: async ({ userId, money, message }, request) => {
     const user = await findUser(request.user.id);
 
-    if (!user.isAdmin) throw new Error('Only admins can use this endpoint');
+    if (!user.is_admin) throw new Error('Only admins can use this endpoint');
 
     return await addMoney(userId, money, message);
   },

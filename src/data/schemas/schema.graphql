@@ -1,6 +1,6 @@
 type User {
   id: ID!
-  isAdmin: Boolean
+  is_admin: Boolean
   name: String!
   telegram_id: String!
   money: Int

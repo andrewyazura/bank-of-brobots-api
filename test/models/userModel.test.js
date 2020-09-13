@@ -16,7 +16,7 @@ describe('user model', () => {
     const expected = {
       name,
       telegram_id,
-      isAdmin: false,
+      is_admin: false,
     };
 
     expect(obj.toObject()).toMatchObject(expected);

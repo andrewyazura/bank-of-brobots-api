@@ -2,8 +2,6 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api)
 
-## Description
-
 API for first #brobots bank. Bank's currency is **brocoin**.
 
 ## Stack

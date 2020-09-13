@@ -13,7 +13,7 @@ describe('registration', () => {
     expect(result).toMatchObject({
       name,
       telegram_id,
-      isAdmin: false,
+      is_admin: false,
       money: 0,
     });
   });

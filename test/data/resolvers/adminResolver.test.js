@@ -14,7 +14,7 @@ describe('admin resolver', () => {
     const admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      is_admin: true,
     });
 
     const users = await adminResolver.users({}, { user: { id: admin._id } });
@@ -29,7 +29,7 @@ describe('admin resolver', () => {
     const admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      is_admin: true,
     });
 
     await transactionModel.create({
@@ -54,7 +54,7 @@ describe('admin resolver', () => {
     let admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      is_admin: true,
     });
 
     await adminResolver.addMoney(

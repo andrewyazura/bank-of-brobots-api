@@ -13,7 +13,7 @@ describe('addMoney', () => {
     const admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      is_admin: true,
     });
 
     await addMoney(admin._id, 500);
@@ -30,7 +30,7 @@ describe('addMoney', () => {
     const admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      is_admin: true,
       money: 1000,
     });
 
