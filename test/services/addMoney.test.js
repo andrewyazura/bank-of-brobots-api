@@ -7,8 +7,8 @@ setupDB('add-money-test');
 
 describe('addMoney', () => {
   test('add money', async () => {
-    let name = 'x',
-      telegram_id = '01234567890';
+    let name = 'x';
+    let telegram_id = '01234567890';
 
     const admin = await userModel.create({
       name,

@@ -10,10 +10,12 @@ describe('user resolver', () => {
   test('user endpoint', async () => {
     let name = 'x';
     let telegram_id = '01234567890';
+    let username = 'xxx';
 
     const obj = await userModel.create({
       name,
       telegram_id,
+      username,
     });
 
     const result = await userResolver.user(
@@ -28,11 +30,13 @@ describe('user resolver', () => {
     let fromUser = await userModel.create({
         name: 'x',
         telegram_id: '01234567890',
+        username: 'xxxx',
         money: 10,
       }),
       toUser = await userModel.create({
         name: 'y',
         telegram_id: '11234567890',
+        username: 'yyyy',
       });
 
     await userResolver.transfer(

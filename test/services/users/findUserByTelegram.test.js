@@ -10,6 +10,7 @@ describe('findUserByTelegram', () => {
     const user = await userModel.create({
       name: 'x',
       telegram_id: '01234567890',
+      username: 'xxxx',
     });
 
     const obj = await findUserByTelegram(user.telegram_id);
@@ -21,11 +22,13 @@ describe('findUserByTelegram', () => {
     const user = await userModel.create({
       name: 'x',
       telegram_id: '01234567890',
+      username: 'xxxx',
     });
 
     await userModel.create({
       name: 'y',
       telegram_id: '11234567890',
+      username: 'yyyy',
     });
 
     const obj = await findUserByTelegram(user.telegram_id);
@@ -37,6 +40,7 @@ describe('findUserByTelegram', () => {
     const user = await userModel.create({
       name: 'x',
       telegram_id: '01234567890',
+      username: 'xxxx',
     });
 
     await userModel.findByIdAndDelete(user._id);

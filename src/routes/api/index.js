@@ -15,7 +15,7 @@ router.use('/register', async (req, res) => {
     return;
   }
 
-  register(body.name, body.telegram_id)
+  register(body.name, body.telegram_id, body.username)
     .then((user) => {
       res.json(user);
     })
