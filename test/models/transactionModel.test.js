@@ -9,18 +9,21 @@ describe('transaction model', () => {
     let fromUser = await userModel({ name: 'x', telegram_id: '01234567890' }),
       toUser = await userModel({ name: 'y', telegram_id: '11234567890' });
 
-    let money = 5000;
+    let money = 5000,
+      queryId = '12345';
 
     const obj = await transactionModel.create({
       fromUser,
       toUser,
       money,
+      queryId,
     });
 
     const expected = {
       fromUser: fromUser.toObject(),
       toUser: toUser.toObject(),
       money,
+      queryId,
     };
 
     expect(obj.toObject()).toMatchObject(expected);

@@ -14,6 +14,7 @@ type Transaction {
   toUser: User
   money: Int!
   message: String
+  queryId: String
 }
 
 type Query {
@@ -31,6 +32,7 @@ type Mutation {
     to_user_id: ID!
     money: Int!
     message: String
+    query_id: String
   ): Transaction!
 
   addMoney(userId: ID!, money: Int, message: String): Boolean
