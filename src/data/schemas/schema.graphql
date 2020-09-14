@@ -3,7 +3,7 @@ type User {
   is_admin: Boolean
   name: String!
   telegram_id: String!
-  username: String!
+  username: String
   money: Int
   transactions: [Transaction]
 }
