@@ -1,10 +1,15 @@
 # Bank of #brobots API
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api) ![CircleCI](https://img.shields.io/circleci/build/github/andrew4ever/bank-of-brobots-api/master?token=cfd935a3964346cb597ac3c5d799b4059f05e305)
 
-## Description
+API for first #brobots bank. Flawlessly transfer your **brocoins**.
 
-API for first #brobots bank. Bank's currency is **brocoin**.
+## What's new in 2.0
+
+* Weekly limit is cancelled! 🎉
+* Performance increased! 🚀
+* Track your expenses and income! 💹
+* Bugfixes! 🐛
 
 ## Stack
 
@@ -25,3 +30,5 @@ For dev-only part:
 ## Warning
 
 This API should not be public. Anybody with direct access to it can provide fake or other user's Telegram ID and get their information.
+
+## [Telegram bot for Bank of #brobots on GitHub](https://github.com/andrew4ever/bank-of-brobots-bot)
