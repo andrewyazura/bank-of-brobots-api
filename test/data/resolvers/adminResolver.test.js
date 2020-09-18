@@ -8,13 +8,15 @@ setupDB('admin-resolver-test');
 
 describe('admin resolver', () => {
   test('users endpoint', async () => {
-    let name = 'x',
-      telegram_id = '01234567890';
+    let name = 'x';
+    let telegram_id = '01234567890';
+    let username = 'xxx';
 
     const admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      username,
+      is_admin: true,
     });
 
     const users = await adminResolver.users({}, { user: { id: admin._id } });
@@ -23,17 +25,19 @@ describe('admin resolver', () => {
   });
 
   test('transactions endpoint', async () => {
-    let name = 'x',
-      telegram_id = '01234567890';
+    let name = 'x';
+    let telegram_id = '01234567890';
+    let username = 'xxx';
 
     const admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      username,
+      is_admin: true,
     });
 
     await transactionModel.create({
-      fromUser: admin._id,
+      fromUser: admin,
       money: 500,
     });
 
@@ -48,13 +52,15 @@ describe('admin resolver', () => {
   });
 
   test('addMoney endpoint', async () => {
-    let name = 'x',
-      telegram_id = '01234567890';
+    let name = 'x';
+    let telegram_id = '01234567890';
+    let username = 'xxx';
 
     let admin = await userModel.create({
       name,
       telegram_id,
-      isAdmin: true,
+      username,
+      is_admin: true,
     });
 
     await adminResolver.addMoney(

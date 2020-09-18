@@ -4,7 +4,6 @@ const transactionSchema = new mongoose.Schema({
   fromUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   },
   toUser: {
     type: mongoose.Schema.Types.ObjectId,
@@ -16,6 +15,13 @@ const transactionSchema = new mongoose.Schema({
   },
   message: {
     type: String,
+  },
+  queryId: {
+    type: String,
+  },
+  createdAt: {
+    type: Number,
+    default: Date.now,
   },
 });
 

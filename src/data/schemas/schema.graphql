@@ -1,13 +1,10 @@
 type User {
   id: ID!
-  isAdmin: Boolean
+  is_admin: Boolean
   name: String!
   telegram_id: String!
+  username: String
   money: Int
-  weekLimit: Int
-  weekLeft: Int
-  planCost: Int
-  planName: String
   transactions: [Transaction]
 }
 
@@ -17,34 +14,27 @@ type Transaction {
   toUser: User
   money: Int!
   message: String
-}
-
-type Subscription {
-  id: Int!
-  name: String!
-  cost: Int
-  limit: Int
+  queryId: String
+  createdAt: Int!
 }
 
 type Query {
   user(id: ID!): User!
   users: [User]
 
-  transactions: [Transaction]
+  telegramToUserId(telegram_id: ID!): ID!
 
-  subscriptions: [Subscription]
+  transactions: [Transaction]
 }
 
 type Mutation {
-  createUser(name: String!, email: String!, password: String!): User!
   transfer(
     from_user_id: ID!
     to_user_id: ID!
     money: Int!
     message: String
+    query_id: String
   ): Transaction!
 
   addMoney(userId: ID!, money: Int, message: String): Boolean
-
-  changeSubscription(subscriptionId: Int, userId: ID!): Subscription
 }

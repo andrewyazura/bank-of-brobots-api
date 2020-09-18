@@ -1,11 +1,11 @@
 import transactionModel from '../../../src/models/transactionModel';
-import findUser from '../../../src/services/users/findUser';
+import findUserByTelegram from '../../../src/services/users/findUserByTelegram';
 import userModel from '../../../src/models/userModel.js';
 import setupDB from '../../setupDatabase';
 
-setupDB('find-user-test');
+setupDB('find-user-telegram-test');
 
-describe('findUser', () => {
+describe('findUserByTelegram', () => {
   test('single user', async () => {
     const user = await userModel.create({
       name: 'x',
@@ -13,7 +13,7 @@ describe('findUser', () => {
       username: 'xxxx',
     });
 
-    const obj = await findUser(user._id);
+    const obj = await findUserByTelegram(user.telegram_id);
 
     expect(obj.toObject()).toMatchObject(user.toObject());
   });
@@ -31,7 +31,7 @@ describe('findUser', () => {
       username: 'yyyy',
     });
 
-    const obj = await findUser(user._id);
+    const obj = await findUserByTelegram(user.telegram_id);
 
     expect(obj.toObject()).toMatchObject(user.toObject());
   });
@@ -45,7 +45,7 @@ describe('findUser', () => {
 
     await userModel.findByIdAndDelete(user._id);
 
-    const obj = await findUser(user._id);
+    const obj = await findUserByTelegram(user.telegram_id);
 
     expect(obj).toBeNull();
   });

@@ -1,6 +1,4 @@
-import { subscriptions } from '../../config';
 import transactionModel from '../../models/transactionModel';
-import addMoney from '../../services/addMoney';
 import findUser from '../../services/users/findUser';
 
 const userResolver = {
@@ -13,8 +11,17 @@ const userResolver = {
     return user;
   },
 
+  telegramToUserId: async ({ telegram_id }, request) => {
+    if (!request.user) throw new Error('No such user');
+
+    if (request.user.telegram_id != telegram_id)
+      throw new Error("User can't see other users' data");
+
+    return request.user.id;
+  },
+
   transfer: async (
-    { from_user_id, to_user_id, money, message = '' },
+    { from_user_id, to_user_id, money, message = '', query_id },
     request,
   ) => {
     const user1 = await findUser(from_user_id);
@@ -24,17 +31,12 @@ const userResolver = {
 
     if (money > user1.money) throw new Error('Sender has not enough money');
 
-    if (user1.weekLeft !== null) {
-      if (money > user1.weekLeft)
-        throw new Error("It's over sender's week limit");
-      user1.weekLeft -= money;
-    }
-
     const transaction = await transactionModel.create({
-      fromUser: from_user_id,
-      toUser: to_user_id,
+      fromUser: user1,
+      toUser: user2,
       money,
       message,
+      queryId: query_id,
     });
 
     user1.transactions.push(transaction);
@@ -47,29 +49,6 @@ const userResolver = {
     await user2.save();
 
     return transaction;
-  },
-
-  changeSubscription: async ({ subscriptionId, userId }, request) => {
-    const subscription = subscriptions[subscriptionId] || null;
-    const user = await findUser(request.user.id);
-
-    if (request.user.id != user.id) throw new Error('Wrong user ID');
-
-    if (user.isAdmin) throw new Error("Admins can't change their plan!");
-
-    if (subscription) {
-      if (await addMoney(userId, -subscription.cost)) {
-        user.weekLimit = subscription.limit;
-        user.weekLeft = subscription.limit;
-        user.planCost = subscription.cost;
-        user.planName = subscription.name;
-        user.planId = subscriptionId;
-      } else throw new Error('Not enough money');
-    } else throw new Error('No such subscription');
-
-    await user.save();
-
-    return subscription;
   },
 };
 

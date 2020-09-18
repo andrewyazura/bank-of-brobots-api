@@ -18,7 +18,6 @@ We use these technologies:
 - Express
 - GraphQL
 - MongoDB
-- JWT tokens
 
 For dev-only part:
 
@@ -26,3 +25,7 @@ For dev-only part:
 - CircleCI for CI
 - Babel
 - Yarn (but you still can use npm)
+
+## Warning
+
+This API should not be public. Anybody with direct access to it can provide fake or other user's Telegram ID and get their information.
