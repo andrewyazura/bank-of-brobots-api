@@ -19,6 +19,10 @@ const transactionSchema = new mongoose.Schema({
   queryId: {
     type: String,
   },
+  createdAt: {
+    type: Number,
+    default: Date.now,
+  },
 });
 
 const transaction = mongoose.model('Transaction', transactionSchema);

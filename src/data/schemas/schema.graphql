@@ -15,6 +15,7 @@ type Transaction {
   money: Int!
   message: String
   queryId: String
+  createdAt: Int!
 }
 
 type Query {
