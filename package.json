@@ -8,7 +8,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
     "test": "jest",
-    "build": "babel src --out-file compiled.js",
+    "build": "babel src --out-file build/compiled.js",
     "buildDir": "babel src --out-dir build"
   },
   "devDependencies": {
