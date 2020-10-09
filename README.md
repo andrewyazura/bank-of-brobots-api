@@ -1,6 +1,6 @@
 # Bank of #brobots API
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api) ![CircleCI](https://img.shields.io/circleci/build/github/andrew4ever/bank-of-brobots-api/master?token=cfd935a3964346cb597ac3c5d799b4059f05e305)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andrew4ever/bank-of-brobots-api/Bank%20API%20CI)
 
 API for first #brobots bank. Flawlessly transfer your **brocoins**.
 
@@ -22,10 +22,10 @@ We use these technologies:
 
 For dev-only part:
 
-- Jest for automated testing
-- CircleCI for CI
+- Yarn
 - Babel
-- Yarn (but you still can use npm)
+- GitHub Actions
+- Jest for automated testing
 
 ## Warning
 
