@@ -18,7 +18,7 @@ We use these technologies:
 - NodeJS
 - Express
 - GraphQL
-- MongoDB
+- MongoDB (only version 4.2 and newer)
 
 For dev-only part:
 
