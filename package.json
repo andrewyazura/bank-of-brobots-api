@@ -8,7 +8,7 @@
   "scripts": {
     "start": "nodemon --exec babel-node src/app.js",
     "test": "jest",
-    "build": "babel src --out-file compiled.js",
+    "build": "babel src --out-file build/compiled.js",
     "buildDir": "babel src --out-dir build"
   },
   "devDependencies": {
@@ -16,8 +16,8 @@
     "@babel/core": "^7.9.6",
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
-    "babel-jest": "^26.3.0",
-    "jest": "^26.4.2",
+    "babel-jest": "^26.5.2",
+    "jest": "^26.5.2",
     "nodemon": "^2.0.3"
   },
   "dependencies": {
@@ -29,7 +29,7 @@
     "express-graphql": "^0.11.0",
     "graphql": "^15.3.0",
     "helmet": "^4.1.1",
-    "mongoose": "^5.10.6"
+    "mongoose": "^5.10.8"
   },
   "jest": {
     "testEnvironment": "node"
