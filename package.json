@@ -12,7 +12,7 @@
     "buildDir": "babel src --out-dir build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
+    "@babel/cli": "^7.12.7",
     "@babel/node": "^7.12.6",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
