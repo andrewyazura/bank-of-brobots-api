@@ -29,7 +29,7 @@
     "express-graphql": "^0.12.0",
     "graphql": "^15.4.0",
     "helmet": "^4.2.0",
-    "mongoose": "^5.10.18"
+    "mongoose": "^5.10.19"
   },
   "jest": {
     "testEnvironment": "node"
