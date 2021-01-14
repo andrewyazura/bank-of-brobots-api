@@ -2,7 +2,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andrew4ever/bank-of-brobots-api/Bank%20API%20CI)
 
-API for first #brobots bank. Flawlessly transfer your **brocoins**.
+API for Bank of #brobots. Send and receive your **brocoins** easily!
 
 ## What's new in 2.0
 
