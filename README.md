@@ -1,6 +1,7 @@
 # Bank of #brobots API
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andrew4ever/bank-of-brobots-api/Bank%20API%20CI)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/andrew4ever/bank-of-brobots-api?style=flat&logo=github&labelColor=181717&color=F8F8F5)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/andrew4ever/bank-of-brobots-api/Bank%20API%20CI?style=flat&logo=github&labelColor=181717&color=brightgreen)
 
 API for Bank of #brobots. Send and receive your **brocoins** easily!
 
