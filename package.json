@@ -17,7 +17,7 @@
     "@babel/node": "^7.14.9",
     "@babel/preset-env": "^7.15.0",
     "babel-jest": "^27.0.6",
-    "jest": "^27.0.6",
+    "jest": "^27.1.0",
     "nodemon": "^2.0.12"
   },
   "dependencies": {
