@@ -6,12 +6,13 @@ from brobank_api.exceptions import (
     InvalidExternalApplicationToken,
 )
 from brobank_api.models import ExternalApplication
+from brobank_api.permissions import EndpointPermissions
 from brobank_api.schemas.external_applications import (
     ApplicationRequestSchema,
     ApplicationSchema,
 )
 from brobank_api.statuses import ExternalApplicationStatus
-from brobank_api.validators import validate_request
+from brobank_api.validators import validate_permission, validate_request
 from flask_login import current_user, login_required
 
 
@@ -44,6 +45,7 @@ def unauthorized():
 
 @api_bp.route("/applications", methods=["GET"])
 @login_required
+@validate_permission(EndpointPermissions.ExternalApplications)
 def application():
     return ApplicationSchema().dump(current_user)
 
@@ -62,6 +64,7 @@ def application_create(request_data):
 @api_bp.route("/applications", methods=["PUT"])
 @validate_request(ApplicationRequestSchema, exclude=("name", "email"))
 @login_required
+@validate_permission(EndpointPermissions.ExternalApplications)
 def application_update(request_data):
     for key, value in request_data.items():
         setattr(current_user, key, value)
@@ -72,6 +75,7 @@ def application_update(request_data):
 
 @api_bp.route("/applications", methods=["DELETE"])
 @login_required
+@validate_permission(EndpointPermissions.ExternalApplications)
 def application_delete():
     current_user.status = ExternalApplicationStatus.Deleted
     db.session.commit()
@@ -81,6 +85,7 @@ def application_delete():
 
 @api_bp.route("/applications/token", methods=["DELETE"])
 @login_required
+@validate_permission(EndpointPermissions.ExternalApplications)
 def application_token_revoke():
     token = current_user.update_token()
     db.session.commit()

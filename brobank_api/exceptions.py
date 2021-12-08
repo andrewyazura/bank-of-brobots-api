@@ -14,6 +14,12 @@ class ExternalApplicationRestricted(CustomException):
     code = 403
 
 
+class ExternalApplicationNoPermission(CustomException):
+    """Raise when external application requests resource it has no permission to"""
+
+    code = 403
+
+
 class InvalidExternalApplicationToken(CustomException):
     """Raise if external application token is invalid"""
 

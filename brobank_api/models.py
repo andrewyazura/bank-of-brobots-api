@@ -8,6 +8,7 @@ from flask_login import UserMixin
 from sqlalchemy.types import ARRAY
 
 from brobank_api import db
+from brobank_api.permissions import EndpointPermissions
 from brobank_api.statuses import (
     ExternalApplicationStatus,
     TransactionStatus,
@@ -61,6 +62,13 @@ class ExternalApplication(UserMixin, db.Model):
     description = db.Column(db.String(280))
     ip_whitelist = db.Column(ARRAY(db.String(15)), default=list)
 
+    permissions = db.Column(
+        ARRAY(db.Enum(EndpointPermissions)),
+        default=lambda _: [
+            EndpointPermissions.ExternalApplications,
+            EndpointPermissions.Transactions,
+        ],
+    )
     token_hash = db.Column(db.String(128), index=True)
     status = db.Column(
         db.Enum(ExternalApplicationStatus), default=ExternalApplicationStatus.Active
@@ -87,3 +95,6 @@ class ExternalApplication(UserMixin, db.Model):
 
     def verify_ip(self, ip):
         return ip in self.ip_whitelist if self.ip_whitelist else True
+
+    def has_permission(self, permission):
+        return permission in self.permissions
