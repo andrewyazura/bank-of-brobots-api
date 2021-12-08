@@ -8,7 +8,7 @@ from flask_login import UserMixin
 from sqlalchemy.types import ARRAY
 
 from brobank_api import db
-from brobank_api.constants import (
+from brobank_api.statuses import (
     ExternalApplicationStatus,
     TransactionStatus,
     UserStatus,

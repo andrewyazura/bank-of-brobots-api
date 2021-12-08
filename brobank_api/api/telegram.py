@@ -5,8 +5,8 @@ from brobank_api import db
 from brobank_api.api import api_bp
 from brobank_api.exceptions import InvalidTelegramCallbackHash
 from brobank_api.models import User
-from brobank_api.schemas import validate_request
 from brobank_api.schemas.telegram import TelegramCallbackSchema
+from brobank_api.validators import validate_request
 from flask import current_app
 
 
