@@ -7,7 +7,7 @@ from brobank_api.exceptions import InvalidTelegramCallbackHash
 from brobank_api.models import User
 from brobank_api.schemas.telegram import TelegramCallbackSchema
 from brobank_api.validators import validate_request
-from flask import current_app
+from flask import current_app, redirect
 
 
 @api_bp.route("/telegram_callback", methods=["GET"])
@@ -31,4 +31,4 @@ def telegram_callback(request_data):
     db.session.add(user)
     db.session.commit()
 
-    return {}, 200
+    return redirect(current_app.config["TELEGRAM_BOT_URL"]), 302
