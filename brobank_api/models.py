@@ -80,7 +80,7 @@ class ExternalApplication(UserMixin, db.Model):
     def update_token(self):
         token = token_hex(64)
         self.token_hash = hmac.new(
-            current_app.config["SECRET_KEY"].encode(), token.encode(), sha256
+            current_app.config.get("SECRET_KEY").encode(), token.encode(), sha256
         ).hexdigest()
         self.token_generated_on = datetime.now()
         return token
@@ -89,7 +89,7 @@ class ExternalApplication(UserMixin, db.Model):
     def get_by_token(cls, token):
         return cls.query.filter_by(
             token_hash=hmac.new(
-                current_app.config["SECRET_KEY"].encode(), token.encode(), sha256
+                current_app.config.get("SECRET_KEY").encode(), token.encode(), sha256
             ).hexdigest()
         ).first()
 

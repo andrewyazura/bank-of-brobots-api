@@ -28,4 +28,5 @@ def create_app(config_class=Config):
         app.register_blueprint(errors_bp)
 
         db.create_all()
-        return app
+
+    return app
