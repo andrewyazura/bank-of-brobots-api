@@ -1,11 +1,12 @@
 import hmac
+import uuid
 from datetime import datetime
 from hashlib import sha256
 from secrets import token_hex
 
 from flask import current_app
 from flask_login import UserMixin
-from sqlalchemy.types import ARRAY
+from sqlalchemy.dialects import postgresql
 
 from brobank_api import db
 from brobank_api.permissions import EndpointPermissions
@@ -18,8 +19,8 @@ from brobank_api.statuses import (
 
 class User(db.Model):
     __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key=True, unique=True)
-    accounts = db.relationship("Account", lazy=True)
+    id = db.Column(db.Integer, primary_key=True)
+    accounts = db.relationship("Account")
     status = db.Column(db.Enum(UserStatus), default=UserStatus.Active)
 
     telegram_id = db.Column(db.Integer, index=True, unique=True)
@@ -33,9 +34,10 @@ class User(db.Model):
 
 class Account(db.Model):
     __tablename__ = "accounts"
-    id = db.Column(db.Integer, primary_key=True)
-    money = db.Column(db.Float)
+    id = db.Column(postgresql.UUID(as_uuid=True), default=uuid.uuid4, primary_key=True)
+    money = db.Column(db.Float, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User", back_populates="accounts")
 
     created_on = db.Column(db.DateTime, default=datetime.now)
 
@@ -44,12 +46,16 @@ class Transaction(db.Model):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float)
-    status = db.Column(db.Enum(TransactionStatus))
+    status = db.Column(db.Enum(TransactionStatus), default=TransactionStatus.Created)
 
-    from_account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"))
-    to_account_id = db.Column(db.Integer, db.ForeignKey("accounts.id"))
+    from_account = db.Column(
+        postgresql.UUID(as_uuid=True), db.ForeignKey("accounts.id")
+    )
+    to_account = db.Column(postgresql.UUID(as_uuid=True), db.ForeignKey("accounts.id"))
 
     created_on = db.Column(db.DateTime, default=datetime.now)
+    confirmed_on = db.Column(db.DateTime)
+    application = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
 
 
 class ExternalApplication(UserMixin, db.Model):
@@ -60,10 +66,10 @@ class ExternalApplication(UserMixin, db.Model):
     email = db.Column(db.String(32), unique=True)
     public_name = db.Column(db.String(32))
     description = db.Column(db.String(280))
-    ip_whitelist = db.Column(ARRAY(db.String(15)), default=list)
+    ip_whitelist = db.Column(postgresql.ARRAY(db.String(15)), default=list)
 
     permissions = db.Column(
-        ARRAY(db.Enum(EndpointPermissions)),
+        postgresql.ARRAY(db.Enum(EndpointPermissions)),
         default=lambda _: [
             EndpointPermissions.ExternalApplications,
             EndpointPermissions.Transactions,
