@@ -7,9 +7,10 @@ class UserStatus(Enum):
 
 
 class TransactionStatus(Enum):
+    Created = auto()
+    WaitingConfirmation = auto()
     Done = auto()
     Rejected = auto()
-    WaitingConfirmation = auto()
 
 
 class ExternalApplicationStatus(Enum):

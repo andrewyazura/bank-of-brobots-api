@@ -2,6 +2,12 @@ class CustomException(Exception):
     code = 500
 
 
+class AccountHasNotEnoughMoney(CustomException):
+    """Raise if sender account has not enough money for transaction"""
+
+    code = 400
+
+
 class ExternalApplicationForbiddenIP(CustomException):
     """Raise when request IP is not in external application's IP whitelist"""
 
