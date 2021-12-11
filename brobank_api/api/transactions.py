@@ -22,9 +22,7 @@ def pay(request_data):
     to_account = Account.query.get(request_data["to_account_id"])
 
     if from_account.money < amount:
-        raise AccountHasNotEnoughMoney(
-            f"Account '{from_account.id}' has not enough money for the transaction."
-        )
+        raise AccountHasNotEnoughMoney()
 
     transaction = Transaction(
         amount=amount,

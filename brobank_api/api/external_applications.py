@@ -26,13 +26,13 @@ def load_application_from_request(request):
     application = ExternalApplication.get_by_token(token)
 
     if not application or application.status == ExternalApplicationStatus.Deleted:
-        raise InvalidExternalApplicationToken("Bearer token is invalid.")
+        raise InvalidExternalApplicationToken()
 
     if application.status == ExternalApplicationStatus.Restricted:
-        raise ExternalApplicationRestricted("Application is restricted.")
+        raise ExternalApplicationRestricted()
 
     if not application.verify_ip(request.remote_addr):
-        raise ExternalApplicationForbiddenIP(f"IP is not allowed.")
+        raise ExternalApplicationForbiddenIP()
 
     return application
 

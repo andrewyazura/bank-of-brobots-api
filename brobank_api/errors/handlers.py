@@ -21,7 +21,7 @@ def internal_error(error):
 
 @errors_bp.app_errorhandler(CustomException)
 def custom_exception(error):
-    return {"error": str(error)}, error.code
+    return {"error": error.message}, error.code
 
 
 @errors_bp.app_errorhandler(ValidationError)

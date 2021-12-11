@@ -27,7 +27,7 @@ def telegram_callback(request_data):
     actual_hash = hmac.new(secret_key, data_check_string.encode(), sha256).hexdigest()
 
     if actual_hash != received_hash:
-        raise InvalidTelegramCallbackHash("Invalid callback hash.")
+        raise InvalidTelegramCallbackHash()
 
     user = User(**request_data)
     db.session.add(user)
