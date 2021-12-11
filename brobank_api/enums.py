@@ -17,3 +17,8 @@ class ExternalApplicationStatus(Enum):
     Active = auto()
     Deleted = auto()
     Restricted = auto()
+
+
+class EndpointPermissions(Enum):
+    ExternalApplications = auto()
+    Transactions = auto()

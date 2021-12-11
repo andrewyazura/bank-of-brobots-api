@@ -1,17 +1,16 @@
 from brobank_api import db, login_manager
 from brobank_api.api import api_bp
+from brobank_api.enums import EndpointPermissions, ExternalApplicationStatus
 from brobank_api.exceptions import (
     ExternalApplicationForbiddenIP,
     ExternalApplicationRestricted,
     InvalidExternalApplicationToken,
 )
 from brobank_api.models import ExternalApplication
-from brobank_api.permissions import EndpointPermissions
 from brobank_api.schemas.external_applications import (
     ApplicationRequestSchema,
     ApplicationSchema,
 )
-from brobank_api.statuses import ExternalApplicationStatus
 from brobank_api.validators import validate_permission, validate_request
 from flask_login import current_user, login_required
 

@@ -9,8 +9,8 @@ from flask_login import UserMixin
 from sqlalchemy.dialects import postgresql
 
 from brobank_api import db
-from brobank_api.permissions import EndpointPermissions
-from brobank_api.statuses import (
+from brobank_api.enums import (
+    EndpointPermissions,
     ExternalApplicationStatus,
     TransactionStatus,
     UserStatus,

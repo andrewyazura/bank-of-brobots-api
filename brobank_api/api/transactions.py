@@ -1,8 +1,8 @@
 from brobank_api import db
 from brobank_api.api import api_bp
+from brobank_api.enums import EndpointPermissions
 from brobank_api.exceptions import AccountHasNotEnoughMoney
 from brobank_api.models import Account, Transaction
-from brobank_api.permissions import EndpointPermissions
 from brobank_api.schemas.transactions import (
     PayRequestSchema,
     TransactionSchema,

@@ -1,6 +1,6 @@
 from brobank_api import marshmallow as ma
+from brobank_api.enums import TransactionStatus
 from brobank_api.models import Transaction
-from brobank_api.statuses import TransactionStatus
 from marshmallow import Schema, fields
 from marshmallow_enum import EnumField
 
