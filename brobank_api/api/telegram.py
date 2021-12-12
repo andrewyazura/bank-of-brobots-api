@@ -13,14 +13,10 @@ from flask import current_app, redirect
 @api_bp.route("/telegram_callback", methods=["GET"])
 @validate_request(TelegramCallbackSchema)
 def telegram_callback(request_data):
-    if not request_data:
-        pass
-
+    bot_config = current_app.config.get("TELEGRAM_BOT")
     received_hash = request_data.pop("hash", None)
 
-    secret_key = sha256(
-        current_app.config.get("TELEGRAM_BOT_TOKEN").encode()
-    ).hexdigest()
+    secret_key = sha256(bot_config.get("TOKEN").encode()).hexdigest()
     data_check_string = "\n".join(
         f"{key}={request_data[key]}" for key in sorted(request_data.keys())
     )
@@ -33,4 +29,4 @@ def telegram_callback(request_data):
     db.session.add(user)
     db.session.commit()
 
-    return redirect(current_app.config.get("TELEGRAM_BOT_URL")), 302
+    return redirect(bot_config.get("REDIRECT_URL")), 302
