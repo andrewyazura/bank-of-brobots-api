@@ -1,0 +1,11 @@
+[Unit]
+Description=Bank of brobots API
+After=network.target
+
+[Service]
+WorkingDirectory=%h/bank-of-brobots-api
+ExecStart=%h/bank-of-brobots-api/scripts/boot.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
