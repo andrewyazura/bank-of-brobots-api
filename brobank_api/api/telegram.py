@@ -16,7 +16,7 @@ def telegram_callback(request_data):
     bot_config = current_app.config.get("TELEGRAM_BOT")
     received_hash = request_data.pop("hash", None)
 
-    secret_key = sha256(bot_config.get("TOKEN").encode()).hexdigest()
+    secret_key = sha256(bot_config.get("TOKEN").encode()).digest()
     data_check_string = "\n".join(
         f"{key}={request_data[key]}" for key in sorted(request_data.keys())
     )
@@ -24,6 +24,8 @@ def telegram_callback(request_data):
 
     if actual_hash != received_hash:
         raise InvalidTelegramCallbackHash()
+
+    request_data.pop("auth_date", None)
 
     user = User(**request_data)
     db.session.add(user)

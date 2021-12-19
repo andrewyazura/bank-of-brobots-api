@@ -27,7 +27,7 @@ class User(db.Model):
     first_name = db.Column(db.String(16))
     last_name = db.Column(db.String(16), nullable=True)
     username = db.Column(db.String(16), unique=True, nullable=True)
-    photo_url = db.Column(db.String(32))
+    photo_url = db.Column(db.String(128))
 
     created_on = db.Column(db.DateTime, default=datetime.now)
 
