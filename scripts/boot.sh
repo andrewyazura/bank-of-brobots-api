@@ -2,4 +2,4 @@
 
 cd ~/bank-of-brobots-api
 
-pipenv run gunicorn -w 4 app:app
+pipenv run gunicorn -w 4 -b :5000 app:app
