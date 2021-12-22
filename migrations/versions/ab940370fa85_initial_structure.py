@@ -82,3 +82,7 @@ def downgrade():
     op.drop_index(op.f('ix_external_applications_token_hash'), table_name='external_applications')
     op.drop_table('external_applications')
     # ### end Alembic commands ###
+    op.execute('DROP TYPE userstatus')
+    op.execute('DROP TYPE transactionstatus')
+    op.execute('DROP TYPE endpointpermissions')
+    op.execute('DROP TYPE externalapplicationstatus')
