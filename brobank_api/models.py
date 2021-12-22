@@ -21,7 +21,7 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     accounts = db.relationship("Account")
-    status = db.Column(db.Enum(UserStatus), default=UserStatus.Active)
+    status = db.Column(postgresql.ENUM(UserStatus), default=UserStatus.Active)
 
     telegram_id = db.Column(db.Integer, index=True, unique=True)
     first_name = db.Column(db.String(16))
@@ -46,7 +46,9 @@ class Transaction(db.Model):
     __tablename__ = "transactions"
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Float)
-    status = db.Column(db.Enum(TransactionStatus), default=TransactionStatus.Created)
+    status = db.Column(
+        postgresql.ENUM(TransactionStatus), default=TransactionStatus.Created
+    )
 
     from_account = db.Column(
         postgresql.UUID(as_uuid=True), db.ForeignKey("accounts.id")
@@ -69,7 +71,7 @@ class ExternalApplication(UserMixin, db.Model):
     ip_whitelist = db.Column(postgresql.ARRAY(db.String(15)), default=list)
 
     permissions = db.Column(
-        postgresql.ARRAY(db.Enum(EndpointPermissions)),
+        postgresql.ARRAY(postgresql.ENUM(EndpointPermissions)),
         default=lambda _: [
             EndpointPermissions.ExternalApplications,
             EndpointPermissions.Transactions,
@@ -77,7 +79,8 @@ class ExternalApplication(UserMixin, db.Model):
     )
     token_hash = db.Column(db.String(128), index=True)
     status = db.Column(
-        db.Enum(ExternalApplicationStatus), default=ExternalApplicationStatus.Active
+        postgresql.ENUM(ExternalApplicationStatus),
+        default=ExternalApplicationStatus.Active,
     )
 
     token_generated_on = db.Column(db.DateTime)

@@ -1,8 +1,8 @@
 """Initial structure
 
-Revision ID: d9e21f23c9c6
+Revision ID: ab940370fa85
 Revises: 
-Create Date: 2021-12-21 22:35:20.915035
+Create Date: 2021-12-22 20:54:24.698744
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = 'd9e21f23c9c6'
+revision = 'ab940370fa85'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,9 +25,9 @@ def upgrade():
     sa.Column('public_name', sa.String(length=32), nullable=True),
     sa.Column('description', sa.String(length=280), nullable=True),
     sa.Column('ip_whitelist', postgresql.ARRAY(sa.String(length=15)), nullable=True),
-    sa.Column('permissions', postgresql.ARRAY(sa.Enum('ExternalApplications', 'Transactions', name='endpointpermissions')), nullable=True),
+    sa.Column('permissions', postgresql.ARRAY(postgresql.ENUM('ExternalApplications', 'Transactions', name='endpointpermissions')), nullable=True),
     sa.Column('token_hash', sa.String(length=128), nullable=True),
-    sa.Column('status', sa.Enum('Active', 'Deleted', 'Restricted', name='externalapplicationstatus'), nullable=True),
+    sa.Column('status', postgresql.ENUM('Active', 'Deleted', 'Restricted', name='externalapplicationstatus'), nullable=True),
     sa.Column('token_generated_on', sa.DateTime(), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
@@ -37,7 +37,7 @@ def upgrade():
     op.create_index(op.f('ix_external_applications_token_hash'), 'external_applications', ['token_hash'], unique=False)
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('status', sa.Enum('Active', 'Restricted', name='userstatus'), nullable=True),
+    sa.Column('status', postgresql.ENUM('Active', 'Restricted', name='userstatus'), nullable=True),
     sa.Column('telegram_id', sa.Integer(), nullable=True),
     sa.Column('first_name', sa.String(length=16), nullable=True),
     sa.Column('last_name', sa.String(length=16), nullable=True),
@@ -59,7 +59,7 @@ def upgrade():
     op.create_table('transactions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('amount', sa.Float(), nullable=True),
-    sa.Column('status', sa.Enum('Created', 'WaitingConfirmation', 'Done', 'Rejected', name='transactionstatus'), nullable=True),
+    sa.Column('status', postgresql.ENUM('Created', 'WaitingConfirmation', 'Done', 'Rejected', name='transactionstatus'), nullable=True),
     sa.Column('from_account', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('to_account', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),

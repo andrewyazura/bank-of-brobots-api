@@ -34,7 +34,7 @@ def invalid_token(error):
     db.session.rollback()
 
     if isinstance(error.orig, UniqueViolation):
-        field, value = re.findall(r"Key \((\w+)\)=\((\w+)\)", error.orig.pgerror)[0]
+        field, value = re.findall(r"Key \((.+)\)=\((.+)\)", error.orig.pgerror)[0]
         return {"error": f"{field=} with {value=} is already taken"}, 400
 
     return {"error": "DB error."}, 400
