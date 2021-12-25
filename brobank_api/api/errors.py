@@ -1,11 +1,14 @@
 import re
 
-from brobank_api import db
-from brobank_api.errors import errors_bp
-from brobank_api.exceptions import CustomException
+from flask import Blueprint
 from marshmallow import ValidationError
 from psycopg2.errors import UniqueViolation
 from sqlalchemy.exc import IntegrityError
+
+from brobank_api import db
+from brobank_api.exceptions import CustomException
+
+errors_bp = Blueprint("errors", __name__)
 
 
 @errors_bp.app_errorhandler(404)

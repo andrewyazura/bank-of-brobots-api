@@ -1,16 +1,18 @@
 import hmac
 from hashlib import sha256
 
+from flask import Blueprint, current_app, redirect
+
 from brobank_api import db
-from brobank_api.api import api_bp
 from brobank_api.exceptions import InvalidTelegramCallbackHash
 from brobank_api.models import User
 from brobank_api.schemas.telegram import TelegramCallbackSchema
 from brobank_api.validators import validate_request
-from flask import current_app, redirect
+
+telegram_bp = Blueprint("telegram", __name__, url_prefix="/telegram")
 
 
-@api_bp.route("/telegram_callback", methods=["GET"])
+@telegram_bp.route("/callback", methods=["GET"])
 @validate_request(TelegramCallbackSchema)
 def telegram_callback(request_data):
     bot_config = current_app.config.get("TELEGRAM_BOT")

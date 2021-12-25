@@ -1,8 +1,9 @@
+from marshmallow import Schema, fields
+from marshmallow_enum import EnumField
+
 from brobank_api import marshmallow as ma
 from brobank_api.enums import TransactionStatus
 from brobank_api.models import Transaction
-from marshmallow import Schema, fields
-from marshmallow_enum import EnumField
 
 
 class PayRequestSchema(Schema):

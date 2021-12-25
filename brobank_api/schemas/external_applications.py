@@ -1,6 +1,7 @@
+from marshmallow import fields, validate
+
 from brobank_api import marshmallow as ma
 from brobank_api.models import ExternalApplication
-from marshmallow import fields, validate
 
 
 class ApplicationRequestSchema(ma.SQLAlchemySchema):

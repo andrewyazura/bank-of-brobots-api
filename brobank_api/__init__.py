@@ -1,9 +1,10 @@
-from config import Config
 from flask import Flask
 from flask_login import LoginManager
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+
+from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -22,9 +23,7 @@ def create_app(config_class=Config):
 
     with app.app_context():
         from brobank_api.api import api_bp
-        from brobank_api.errors import errors_bp
 
-        app.register_blueprint(api_bp, url_prefix="/api")
-        app.register_blueprint(errors_bp)
+        app.register_blueprint(api_bp)
 
     return app
