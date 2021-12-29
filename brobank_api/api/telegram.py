@@ -2,6 +2,7 @@ import hmac
 from hashlib import sha256
 
 from flask import Blueprint, current_app, redirect
+from psycopg2.errors import IntegrityError
 
 from brobank_api import db
 from brobank_api.exceptions import InvalidTelegramCallbackHash
@@ -29,8 +30,11 @@ def telegram_callback(request_data):
 
     request_data.pop("auth_date", None)
 
-    user = User(**request_data)
-    db.session.add(user)
-    db.session.commit()
+    try:
+        user = User(**request_data)
+        db.session.add(user)
+        db.session.commit()
+    except IntegrityError:
+        return redirect(bot_config.get("REDIRECT_URL")), 302
 
     return redirect(bot_config.get("REDIRECT_URL")), 302
