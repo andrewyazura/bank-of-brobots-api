@@ -27,6 +27,7 @@ class ExternalApplicationNoPermission(CustomException):
     """Raise when external application requests resource it has no permission to"""
 
     code = 403
+    message = "You don't have permission to access this resource."
 
 
 class InvalidExternalApplicationToken(CustomException):
@@ -41,3 +42,12 @@ class InvalidTelegramCallbackHash(CustomException):
 
     code = 400
     message = "Invalid callback hash."
+
+
+class InvalidRequestParameter(CustomException):
+    """Raise if parameter is invalid or requested value doesn't exist"""
+
+    def __init__(self, parameter):
+        super().__init__()
+        self.code = 400
+        self.message = f"{parameter} is invalid."

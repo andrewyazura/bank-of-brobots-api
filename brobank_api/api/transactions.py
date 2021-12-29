@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 
 from brobank_api import db
 from brobank_api.enums import EndpointPermissions
-from brobank_api.exceptions import AccountHasNotEnoughMoney
+from brobank_api.exceptions import AccountHasNotEnoughMoney, InvalidRequestParameter
 from brobank_api.models import Account, Transaction
 from brobank_api.schemas.transactions import (
     PayRequestSchema,
@@ -20,10 +20,13 @@ transactions_bp = Blueprint("transactions", __name__, url_prefix="/transactions"
 @validate_permission(EndpointPermissions.Transactions)
 @validate_request(TransactionSchema)
 def get_transactions(request_data):
-    transactions = Transaction.query.filter_by(
-        application=current_user.id, **request_data
+    return TransactionsSchema().dump(
+        {
+            "transactions": Transaction.query.filter_by(
+                application=current_user.id, **request_data
+            )
+        }
     )
-    return TransactionsSchema().dump({"transactions": transactions})
 
 
 @transactions_bp.route("/pay", methods=["POST"])
@@ -34,6 +37,12 @@ def pay(request_data):
     amount = request_data["amount"]
     from_account = Account.query.get(request_data["from_account_id"])
     to_account = Account.query.get(request_data["to_account_id"])
+
+    if not from_account:
+        raise InvalidRequestParameter("from_account_id")
+
+    if not to_account:
+        raise InvalidRequestParameter("to_account_id")
 
     if from_account.money < amount:
         raise AccountHasNotEnoughMoney()
