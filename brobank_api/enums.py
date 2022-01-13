@@ -19,6 +19,6 @@ class ExternalApplicationStatus(Enum):
     Restricted = auto()
 
 
-class EndpointPermissions(Enum):
+class Permissions(Enum):
     ExternalApplications = auto()
     Transactions = auto()

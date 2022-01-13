@@ -10,7 +10,7 @@ from sqlalchemy.dialects import postgresql
 
 from brobank_api import db
 from brobank_api.enums import (
-    EndpointPermissions,
+    Permissions,
     ExternalApplicationStatus,
     TransactionStatus,
     UserStatus,
@@ -36,8 +36,12 @@ class Account(db.Model):
     __tablename__ = "accounts"
     id = db.Column(postgresql.UUID(as_uuid=True), default=uuid.uuid4, primary_key=True)
     money = db.Column(db.Float, default=0)
+
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship("User", back_populates="accounts")
+
+    application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
+    application = db.relationship("ExternalApplication", back_populates="accounts")
 
     created_on = db.Column(db.DateTime, default=datetime.now)
 
@@ -57,12 +61,13 @@ class Transaction(db.Model):
 
     created_on = db.Column(db.DateTime, default=datetime.now)
     confirmed_on = db.Column(db.DateTime)
-    application = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
+    application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
 
 
 class ExternalApplication(UserMixin, db.Model):
     __tablename__ = "external_applications"
     id = db.Column(db.Integer, primary_key=True)
+    accounts = db.relationship("Account")
 
     name = db.Column(db.String(16), unique=True)
     email = db.Column(db.String(32), unique=True)
@@ -71,10 +76,10 @@ class ExternalApplication(UserMixin, db.Model):
     ip_whitelist = db.Column(postgresql.ARRAY(db.String(15)), default=list)
 
     permissions = db.Column(
-        postgresql.ARRAY(postgresql.ENUM(EndpointPermissions)),
+        postgresql.ARRAY(postgresql.ENUM(Permissions)),
         default=lambda _: [
-            EndpointPermissions.ExternalApplications,
-            EndpointPermissions.Transactions,
+            Permissions.ExternalApplications,
+            Permissions.Transactions,
         ],
     )
     token_hash = db.Column(db.String(128), index=True)
