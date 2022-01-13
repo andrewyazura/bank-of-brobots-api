@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 
 from brobank_api import db
 from brobank_api.enums import Permissions
-from brobank_api.exceptions import AccountHasNotEnoughMoney, InvalidRequestParameter
+from brobank_api.exceptions import APIException, InvalidRequestParameter
 from brobank_api.models import Account, Transaction
 from brobank_api.schemas.transactions import (
     PayRequestSchema,
@@ -49,7 +49,9 @@ def pay(request_data):
         raise InvalidRequestParameter("to_account_id")
 
     if from_account.money < amount:
-        raise AccountHasNotEnoughMoney()
+        raise APIException(
+            400, "Sender account has not enough money for the transaction."
+        )
 
     transaction = Transaction(
         amount=amount,

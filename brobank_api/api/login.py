@@ -1,10 +1,6 @@
 from brobank_api import login_manager
 from brobank_api.enums import ExternalApplicationStatus
-from brobank_api.exceptions import (
-    ExternalApplicationForbiddenIP,
-    ExternalApplicationRestricted,
-    InvalidExternalApplicationToken,
-)
+from brobank_api.exceptions import APIException
 from brobank_api.models import ExternalApplication
 
 
@@ -19,13 +15,13 @@ def load_application_from_request(request):
     application = ExternalApplication.get_by_token(token)
 
     if not application or application.status == ExternalApplicationStatus.Deleted:
-        raise InvalidExternalApplicationToken()
+        raise APIException(400, "Bearer token is invalid.")
 
     if application.status == ExternalApplicationStatus.Restricted:
-        raise ExternalApplicationRestricted()
+        raise APIException(403, "Application is restricted.")
 
     if not application.verify_ip(request.remote_addr):
-        raise ExternalApplicationForbiddenIP()
+        raise APIException(403, "IP is not allowed.")
 
     return application
 

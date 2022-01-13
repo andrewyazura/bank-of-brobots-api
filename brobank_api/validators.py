@@ -3,7 +3,7 @@ from functools import wraps
 from flask import request
 from flask_login import current_user
 
-from brobank_api.exceptions import ExternalApplicationNoPermission
+from brobank_api.exceptions import APIException
 
 
 def validate_request(schema, *args, **kwargs):
@@ -44,8 +44,8 @@ def validate_permission(permission):
                 pass
 
             if not current_user.has_permission(permission):
-                raise ExternalApplicationNoPermission(
-                    "This application has no access to this resource."
+                raise APIException(
+                    401, "This application has no access to this resource."
                 )
 
             return f(*_args, **_kwargs)

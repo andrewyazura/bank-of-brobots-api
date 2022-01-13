@@ -5,7 +5,7 @@ from flask import Blueprint, current_app, redirect
 from psycopg2.errors import IntegrityError
 
 from brobank_api import db
-from brobank_api.exceptions import InvalidTelegramCallbackHash
+from brobank_api.exceptions import APIException
 from brobank_api.models import User
 from brobank_api.schemas.telegram import TelegramCallbackSchema
 from brobank_api.validators import validate_request
@@ -26,7 +26,7 @@ def telegram_callback(request_data):
     actual_hash = hmac.new(secret_key, data_check_string.encode(), sha256).hexdigest()
 
     if actual_hash != received_hash:
-        raise InvalidTelegramCallbackHash()
+        raise APIException(400, "Invalid callback hash.")
 
     request_data.pop("auth_date", None)
 

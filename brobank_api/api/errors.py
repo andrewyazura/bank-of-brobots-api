@@ -6,7 +6,7 @@ from psycopg2.errors import UniqueViolation
 from sqlalchemy.exc import IntegrityError
 
 from brobank_api import db
-from brobank_api.exceptions import CustomException
+from brobank_api.exceptions import APIException
 
 errors_bp = Blueprint("errors", __name__)
 
@@ -22,7 +22,7 @@ def internal_error(error):
     return {"error": "Internal error."}, 500
 
 
-@errors_bp.app_errorhandler(CustomException)
+@errors_bp.app_errorhandler(APIException)
 def custom_exception(error):
     return {"error": error.message}, error.code
 
