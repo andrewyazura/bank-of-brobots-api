@@ -78,7 +78,6 @@ class ExternalApplication(UserMixin, db.Model):
     permissions = db.Column(
         postgresql.ARRAY(postgresql.ENUM(Permissions)),
         default=lambda _: [
-            Permissions.ExternalApplications,
             Permissions.Transactions,
         ],
     )

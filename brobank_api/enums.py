@@ -20,5 +20,4 @@ class ExternalApplicationStatus(Enum):
 
 
 class Permissions(Enum):
-    ExternalApplications = auto()
     Transactions = auto()

@@ -25,6 +25,17 @@ def validate_request(schema, *args, **kwargs):
     return decorator
 
 
+def validate_response(schema, *args, **kwargs):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*_args, **_kwargs):
+            return schema(*args, **kwargs).dump(f(*_args, **_kwargs))
+
+        return decorated_function
+
+    return decorator
+
+
 def validate_permission(permission):
     def decorator(f):
         @wraps(f)

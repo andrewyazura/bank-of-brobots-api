@@ -10,7 +10,11 @@ from brobank_api.schemas.transactions import (
     TransactionSchema,
     TransactionsSchema,
 )
-from brobank_api.validators import validate_permission, validate_request
+from brobank_api.validators import (
+    validate_permission,
+    validate_request,
+    validate_response,
+)
 
 transactions_bp = Blueprint("transactions", __name__, url_prefix="/transactions")
 
@@ -19,20 +23,20 @@ transactions_bp = Blueprint("transactions", __name__, url_prefix="/transactions"
 @login_required
 @validate_permission(Permissions.Transactions)
 @validate_request(TransactionSchema)
+@validate_response(TransactionsSchema)
 def get_transactions(request_data):
-    return TransactionsSchema().dump(
-        {
-            "transactions": Transaction.query.filter_by(
-                application_id=current_user.id, **request_data
-            )
-        }
-    )
+    return {
+        "transactions": Transaction.query.filter_by(
+            application_id=current_user.id, **request_data
+        )
+    }
 
 
 @transactions_bp.route("/pay", methods=["POST"])
 @login_required
 @validate_permission(Permissions.Transactions)
 @validate_request(PayRequestSchema)
+@validate_response(TransactionSchema)
 def pay(request_data):
     amount = request_data["amount"]
     from_account = Account.query.get(request_data["from_account_id"])
@@ -56,4 +60,4 @@ def pay(request_data):
     db.session.add(transaction)
     db.session.commit()
 
-    return TransactionSchema().dump(transaction)
+    return transaction
