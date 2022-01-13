@@ -12,13 +12,7 @@ class ApplicationRequestSchema(ma.SQLAlchemySchema):
     email = fields.Email(required=True)
     public_name = ma.auto_field()
     description = ma.auto_field()
-    ip_whitelist = fields.List(
-        fields.String(
-            validate=validate.Regexp(
-                r"\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b"
-            )
-        )
-    )
+    ip_whitelist = fields.List(fields.IPv4())
 
 
 class ApplicationSchema(ma.SQLAlchemySchema):

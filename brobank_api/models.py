@@ -2,19 +2,23 @@ import hmac
 import uuid
 from datetime import datetime
 from hashlib import sha256
+from ipaddress import IPv4Address
 from secrets import token_hex
 
 from flask import current_app
 from flask_login import UserMixin
+from psycopg2.extensions import register_adapter, AsIs
 from sqlalchemy.dialects import postgresql
 
 from brobank_api import db
 from brobank_api.enums import (
-    Permissions,
     ExternalApplicationStatus,
+    Permissions,
     TransactionStatus,
     UserStatus,
 )
+
+register_adapter(IPv4Address, lambda a: AsIs(repr(a.exploded)))
 
 
 class User(db.Model):
@@ -73,13 +77,11 @@ class ExternalApplication(UserMixin, db.Model):
     email = db.Column(db.String(32), unique=True)
     public_name = db.Column(db.String(32))
     description = db.Column(db.String(280))
-    ip_whitelist = db.Column(postgresql.ARRAY(db.String(15)), default=list)
+    ip_whitelist = db.Column(postgresql.ARRAY(postgresql.INET), default=list)
 
     permissions = db.Column(
         postgresql.ARRAY(postgresql.ENUM(Permissions)),
-        default=lambda _: [
-            Permissions.Transactions,
-        ],
+        default=lambda _: [Permissions.Transactions],
     )
     token_hash = db.Column(db.String(128), index=True)
     status = db.Column(
