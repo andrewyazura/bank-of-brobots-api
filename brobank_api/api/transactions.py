@@ -32,7 +32,7 @@ def get_transactions(request_data):
     }
 
 
-@transactions_bp.route("/pay", methods=["POST"])
+@transactions_bp.route("", methods=["POST"])
 @login_required
 @validate_permission(Permissions.Transactions)
 @validate_request(PayRequestSchema)
@@ -47,6 +47,17 @@ def pay(request_data):
 
     if not to_account:
         raise InvalidRequestParameter("to_account_id")
+
+    if (
+        not current_user.has_permission(Permissions.UserToUserTransactions)
+        and from_account.application_id != current_user.id
+        and to_account.application_id != current_user.id
+    ):
+        raise APIException(
+            403,
+            "This application is not allowed to "
+            "execute direct user-to-user transactions",
+        )
 
     if from_account.money < amount:
         raise APIException(
