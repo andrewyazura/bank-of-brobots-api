@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask_login import current_user, login_required
 
 from brobank_api import db
-from brobank_api.enums import ExternalApplicationStatus
 from brobank_api.models import Account, ExternalApplication
 from brobank_api.schemas.accounts import AccountSchema, AccountsSchema
 from brobank_api.schemas.external_applications import (
@@ -48,7 +47,7 @@ def update_application(request_data):
 @login_required
 @validate_response(ApplicationSchema)
 def delete_application():
-    current_user.status = ExternalApplicationStatus.Deleted
+    current_user.mark_deleted()
     db.session.commit()
 
     return current_user
