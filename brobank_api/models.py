@@ -7,7 +7,7 @@ from secrets import token_hex
 
 from flask import current_app
 from flask_login import UserMixin
-from psycopg2.extensions import register_adapter, AsIs
+from psycopg2.extensions import AsIs, register_adapter
 from sqlalchemy.dialects import postgresql
 
 from brobank_api import db

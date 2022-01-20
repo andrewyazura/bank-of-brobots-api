@@ -4,9 +4,9 @@ from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from config import Config
+from config import Config, db_metadata
 
-db = SQLAlchemy()
+db = SQLAlchemy(metadata=db_metadata)
 migrate = Migrate()
 marshmallow = Marshmallow()
 login_manager = LoginManager()

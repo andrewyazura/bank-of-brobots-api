@@ -1,8 +1,8 @@
 """Initial structure
 
-Revision ID: e0629448d6c2
+Revision ID: ab940370fa85
 Revises: 
-Create Date: 2022-01-13 11:52:22.678489
+Create Date: 2021-12-22 20:54:24.698744
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = 'e0629448d6c2'
+revision = 'ab940370fa85'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,7 +25,7 @@ def upgrade():
     sa.Column('public_name', sa.String(length=32), nullable=True),
     sa.Column('description', sa.String(length=280), nullable=True),
     sa.Column('ip_whitelist', postgresql.ARRAY(postgresql.INET()), nullable=True),
-    sa.Column('permissions', postgresql.ARRAY(postgresql.ENUM('Transactions', 'UserToUserTransactions', name='permissions')), nullable=True),
+    sa.Column('permissions', postgresql.ARRAY(postgresql.ENUM('ExternalApplications', 'Transactions', name='endpointpermissions')), nullable=True),
     sa.Column('token_hash', sa.String(length=128), nullable=True),
     sa.Column('status', postgresql.ENUM('Active', 'Deleted', 'Restricted', name='externalapplicationstatus'), nullable=True),
     sa.Column('token_generated_on', sa.DateTime(), nullable=True),
@@ -52,9 +52,7 @@ def upgrade():
     sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
     sa.Column('money', sa.Float(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
-    sa.Column('application_id', sa.Integer(), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['application_id'], ['external_applications.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -66,8 +64,8 @@ def upgrade():
     sa.Column('to_account', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('created_on', sa.DateTime(), nullable=True),
     sa.Column('confirmed_on', sa.DateTime(), nullable=True),
-    sa.Column('application_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['application_id'], ['external_applications.id'], ),
+    sa.Column('application', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['application'], ['external_applications.id'], ),
     sa.ForeignKeyConstraint(['from_account'], ['accounts.id'], ),
     sa.ForeignKeyConstraint(['to_account'], ['accounts.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -84,7 +82,7 @@ def downgrade():
     op.drop_index(op.f('ix_external_applications_token_hash'), table_name='external_applications')
     op.drop_table('external_applications')
     # ### end Alembic commands ###
-    op.execute('DROP TYPE permissions')
     op.execute('DROP TYPE userstatus')
     op.execute('DROP TYPE transactionstatus')
+    op.execute('DROP TYPE endpointpermissions')
     op.execute('DROP TYPE externalapplicationstatus')
