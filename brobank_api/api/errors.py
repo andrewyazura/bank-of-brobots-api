@@ -1,9 +1,9 @@
 import re
 
-from flask import Blueprint
+from flask import Blueprint, abort
 from marshmallow import ValidationError
 from psycopg2.errors import UniqueViolation
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy import exc
 
 from brobank_api import db
 from brobank_api.exceptions import APIException
@@ -32,8 +32,14 @@ def marshmallow_error(error):
     return {"error": "Validation error.", "errors": error.messages}, 400
 
 
-@errors_bp.app_errorhandler(IntegrityError)
-def invalid_token(error):
+@errors_bp.app_errorhandler(exc.OperationalError)
+def operational_error(error):
+    db.session.rollback()
+    return {"error": "Internal error."}, 500
+
+
+@errors_bp.app_errorhandler(exc.IntegrityError)
+def integrity_error(error):
     db.session.rollback()
 
     if isinstance(error.orig, UniqueViolation):
