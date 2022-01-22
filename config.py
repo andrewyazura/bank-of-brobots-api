@@ -33,7 +33,7 @@ class Config(object):
 
     LOG_CONFIG = {
         "version": 1,
-        "disable_existing_loggers": True,
+        "disable_existing_loggers": False,
         "formatters": {
             "file": {
                 "format": LOG_CONFIG.get("FORMAT"),
