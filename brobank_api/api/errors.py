@@ -2,8 +2,7 @@ import re
 
 from flask import Blueprint, current_app, request
 from marshmallow import ValidationError
-from psycopg2.errors import UniqueViolation
-from sqlalchemy import exc
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 from brobank_api import db
 from brobank_api.exceptions import APIException
@@ -36,14 +35,17 @@ def marshmallow_error(error):
     return {"error": "Validation error.", "errors": error.messages}, 400
 
 
-@errors_bp.app_errorhandler(exc.SQLAlchemyError)
-def integrity_error(error):
+@errors_bp.app_errorhandler(IntegrityError)
+def unique_violation_error(error):
     db.session.rollback()
+    current_app.logger.warning(error)
+    field, value = re.findall(r"Key \((.+)\)=\((.+)\)", error.orig.pgerror)[0]
+    return {"error": f"{field=} with {value=} is already taken"}, 400
 
-    if isinstance(error.orig, UniqueViolation):
-        current_app.logger.warning(error)
-        field, value = re.findall(r"Key \((.+)\)=\((.+)\)", error.orig.pgerror)[0]
-        return {"error": f"{field=} with {value=} is already taken"}, 400
 
+@errors_bp.app_errorhandler(SQLAlchemyError)
+def integrity_error(error):
+    print(type(error))
+    db.session.rollback()
     current_app.logger.critical(error)
     return {"error": "DB error."}, 500

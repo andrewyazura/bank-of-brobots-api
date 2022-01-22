@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask_login import current_user, login_required
 
 from brobank_api import db
+from brobank_api.exceptions import InvalidRequestParameter
 from brobank_api.models import Account, ExternalApplication
 from brobank_api.schemas.accounts import AccountSchema, AccountsSchema
 from brobank_api.schemas.external_applications import (
@@ -84,8 +85,11 @@ def create_account():
 @validate_response(AccountSchema)
 def delete_account(request_data):
     account = Account.query.filter_by(
-        application=current_user.id, **request_data
+        application_id=current_user.id, **request_data
     ).first()
+
+    if not account:
+        raise InvalidRequestParameter("id")
 
     db.session.delete(account)
     db.session.commit()
