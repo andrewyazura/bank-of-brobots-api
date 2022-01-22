@@ -31,7 +31,7 @@ def upgrade():
     # ### end Alembic commands ###
     new_type.create(op.get_bind(), checkfirst=False)
 
-    op.execute('ALTER TABLE external_applications ALTER COLUMN permissions TYPE permissions USING permissions::text::permissions')
+    op.execute('ALTER TABLE external_applications ALTER COLUMN permissions TYPE permissions[] USING permissions::text::permissions[]')
 
     old_type.drop(op.get_bind(), checkfirst=False)
 
@@ -47,6 +47,6 @@ def downgrade():
     # ### end Alembic commands ###
     old_type.create(op.get_bind(), checkfirst=False)
 
-    op.execute('ALTER TABLE external_applications ALTER COLUMN permissions TYPE endpointpermissions USING permissions::text::endpointpermissions')
+    op.execute('ALTER TABLE external_applications ALTER COLUMN permissions TYPE endpointpermissions[] USING permissions::text::endpointpermissions[]')
 
     new_type.drop(op.get_bind(), checkfirst=False)
