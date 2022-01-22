@@ -26,7 +26,7 @@ def load_application_from_request(request):
         raise APIException(403, "IP is not allowed.")
 
     current_app.logger.info(
-        "Application logged in successfully - "
+        "Application logged in successfully: "
         f"id={application.id} name={application.name}"
     )
 

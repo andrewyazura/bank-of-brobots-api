@@ -15,8 +15,9 @@ applications_bp = Blueprint("applications", __name__, url_prefix="/applications"
 
 @applications_bp.route("", methods=["GET"])
 @login_required
+@validate_response(ApplicationSchema)
 def get_application():
-    return ApplicationSchema().dump(current_user)
+    return current_user
 
 
 @applications_bp.route("", methods=["POST"])

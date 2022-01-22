@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, current_app, request
 
 import brobank_api.api.login
 from brobank_api.api.errors import errors_bp
@@ -12,3 +12,10 @@ api_bp.register_blueprint(errors_bp)
 api_bp.register_blueprint(applications_bp)
 api_bp.register_blueprint(telegram_bp)
 api_bp.register_blueprint(transactions_bp)
+
+
+@api_bp.before_request
+def log_request_info():
+    current_app.logger.info(
+        f"{request.remote_addr} - {request.method} - {request.path}"
+    )
