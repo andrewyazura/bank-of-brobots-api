@@ -1,3 +1,5 @@
+from flask import current_app
+
 from brobank_api import login_manager
 from brobank_api.enums import ExternalApplicationStatus
 from brobank_api.exceptions import APIException
@@ -23,9 +25,15 @@ def load_application_from_request(request):
     if not application.verify_ip(request.remote_addr):
         raise APIException(403, "IP is not allowed.")
 
+    current_app.logger.info(
+        "Application logged in successfully - "
+        f"id={application.id} name={application.name}"
+    )
+
     return application
 
 
 @login_manager.unauthorized_handler
 def unauthorized():
+    current_app.logger.warning("Unauthorized request")
     return {"error": "Request is unauthorized."}, 401

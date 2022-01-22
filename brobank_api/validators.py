@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import request
+from flask import current_app, request
 from flask_login import current_user
 
 from brobank_api.exceptions import APIException
@@ -17,6 +17,8 @@ def validate_request(schema, *args, **kwargs):
             elif request.method in ("POST", "PUT", "DELETE"):
                 request_data = request.json
 
+            current_app.logger.debug(request_data)
+
             result = schema(*args, **kwargs).load(request_data)
             return f(result, *_args, **_kwargs)
 
@@ -29,7 +31,9 @@ def validate_response(schema, *args, **kwargs):
     def decorator(f):
         @wraps(f)
         def decorated_function(*_args, **_kwargs):
-            return schema(*args, **kwargs).dump(f(*_args, **_kwargs))
+            response_data = f(*_args, **_kwargs)
+            current_app.logger.debug(response_data)
+            return schema(*args, **kwargs).dump(response_data)
 
         return decorated_function
 
@@ -47,6 +51,8 @@ def validate_permission(permission):
                 raise APIException(
                     401, "This application has no access to this resource."
                 )
+
+            current_app.logger.debug(f"Permission validated - {permission}")
 
             return f(*_args, **_kwargs)
 
