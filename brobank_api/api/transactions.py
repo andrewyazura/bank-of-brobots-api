@@ -1,4 +1,5 @@
-from flask import Blueprint
+import requests
+from flask import Blueprint, current_app
 from flask_login import current_user, login_required
 
 from brobank_api import db
@@ -86,10 +87,10 @@ def pay(request_data):
 @validate_request(UpdateTransactionRequestSchema)
 @validate_response(TransactionSchema)
 def update_transaction_status(request_data):
+    status = request_data["status"]
     transaction = Transaction.query.with_for_update().get(
         request_data["transaction_id"]
     )
-    status = request_data["status"]
 
     if not transaction:
         raise InvalidRequestParameter("transaction_id")
@@ -110,5 +111,12 @@ def update_transaction_status(request_data):
     transaction.update_status(status)
 
     db.session.commit()
+
+    if callback_url := transaction.application.callback_url:
+        requests.post(
+            url=callback_url,
+            data=TransactionSchema().dump(transaction),
+            headers=current_app.config["CALLBACK_HEADERS"],
+        )
 
     return transaction

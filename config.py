@@ -57,3 +57,5 @@ class Config(object):
         },
         "root": {"level": LOG_CONFIG.get("LEVEL"), "handlers": ["file"]},
     }
+
+    CALLBACK_HEADERS = {"User-Agent": os.environ.get("USER_AGENT")}

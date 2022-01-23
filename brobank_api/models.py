@@ -28,10 +28,10 @@ class User(db.Model):
     status = db.Column(postgresql.ENUM(UserStatus), default=UserStatus.Active)
 
     telegram_id = db.Column(db.Integer, index=True, unique=True)
-    first_name = db.Column(db.String(16))
+    first_name = db.Column(db.String(16), nullable=True)
     last_name = db.Column(db.String(16), nullable=True)
     username = db.Column(db.String(16), unique=True, nullable=True)
-    photo_url = db.Column(db.String(128))
+    photo_url = db.Column(db.String(128), nullable=True)
 
     created_on = db.Column(db.DateTime, default=datetime.now)
 
@@ -41,10 +41,10 @@ class Account(db.Model):
     id = db.Column(postgresql.UUID(as_uuid=True), default=uuid.uuid4, primary_key=True)
     money = db.Column(db.Float, default=0)
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     user = db.relationship("User", back_populates="accounts")
 
-    application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
+    application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"), nullable=True)
     application = db.relationship("ExternalApplication", back_populates="accounts")
 
     created_on = db.Column(db.DateTime, default=datetime.now)
@@ -68,7 +68,7 @@ class Transaction(db.Model):
     to_account = db.relationship("Account", foreign_keys=[to_account_id])
 
     created_on = db.Column(db.DateTime, default=datetime.now)
-    confirmed_on = db.Column(db.DateTime)
+    confirmed_on = db.Column(db.DateTime, nullable=True)
 
     application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
     application = db.relationship("ExternalApplication", foreign_keys=[application_id])
@@ -83,11 +83,14 @@ class ExternalApplication(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     accounts = db.relationship("Account")
 
-    name = db.Column(db.String(16), unique=True)
+    name = db.Column(db.String(32), unique=True)
     email = db.Column(db.String(32), unique=True)
-    public_name = db.Column(db.String(32))
-    description = db.Column(db.String(280))
-    ip_whitelist = db.Column(postgresql.ARRAY(postgresql.INET), default=list)
+    public_name = db.Column(db.String(32), nullable=True)
+    description = db.Column(db.String(280), nullable=True)
+    callback_url = db.Column(db.String(280), nullable=True)
+    ip_whitelist = db.Column(
+        postgresql.ARRAY(postgresql.INET), default=list, nullable=True
+    )
 
     permissions = db.Column(
         postgresql.ARRAY(postgresql.ENUM(Permissions)),

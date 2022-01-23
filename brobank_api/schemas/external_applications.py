@@ -12,6 +12,7 @@ class ApplicationRequestSchema(ma.SQLAlchemySchema):
     email = fields.Email(required=True)
     public_name = ma.auto_field()
     description = ma.auto_field()
+    callback_url = fields.Url(schemes=("http", "https"))
     ip_whitelist = fields.List(fields.IPv4())
 
 
@@ -23,4 +24,5 @@ class ApplicationSchema(ma.SQLAlchemySchema):
     name = ma.auto_field()
     description = ma.auto_field()
     email = ma.auto_field()
+    callback_url = ma.auto_field()
     ip_whitelist = ma.auto_field()
