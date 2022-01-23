@@ -58,14 +58,24 @@ class Transaction(db.Model):
         postgresql.ENUM(TransactionStatus), default=TransactionStatus.Created
     )
 
-    from_account = db.Column(
+    from_account_id = db.Column(
         postgresql.UUID(as_uuid=True), db.ForeignKey("accounts.id")
     )
-    to_account = db.Column(postgresql.UUID(as_uuid=True), db.ForeignKey("accounts.id"))
+    from_account = db.relationship("Account", foreign_keys=[from_account_id])
+    to_account_id = db.Column(
+        postgresql.UUID(as_uuid=True), db.ForeignKey("accounts.id")
+    )
+    to_account = db.relationship("Account", foreign_keys=[to_account_id])
 
     created_on = db.Column(db.DateTime, default=datetime.now)
     confirmed_on = db.Column(db.DateTime)
+
     application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"))
+    application = db.relationship("ExternalApplication", foreign_keys=[application_id])
+
+    def update_status(self, status):
+        self.status = status
+        self.confirmed_on = datetime.now()
 
 
 class ExternalApplication(UserMixin, db.Model):

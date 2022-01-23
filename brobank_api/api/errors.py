@@ -45,7 +45,6 @@ def unique_violation_error(error):
 
 @errors_bp.app_errorhandler(SQLAlchemyError)
 def integrity_error(error):
-    print(type(error))
     db.session.rollback()
     current_app.logger.critical(error)
     return {"error": "DB error."}, 500

@@ -2,13 +2,14 @@ from flask import Blueprint
 from flask_login import current_user, login_required
 
 from brobank_api import db
-from brobank_api.enums import Permissions
+from brobank_api.enums import Permissions, TransactionStatus
 from brobank_api.exceptions import APIException, InvalidRequestParameter
 from brobank_api.models import Account, Transaction
 from brobank_api.schemas.transactions import (
     PayRequestSchema,
     TransactionSchema,
     TransactionsSchema,
+    UpdateTransactionRequestSchema,
 )
 from brobank_api.validators import (
     validate_permission,
@@ -36,7 +37,7 @@ def get_transactions(request_data):
 @login_required
 @validate_permission(Permissions.Transactions)
 @validate_request(PayRequestSchema)
-@validate_response(TransactionSchema)
+@validate_response(TransactionSchema, exclude=("confirmed_on",))
 def pay(request_data):
     amount = request_data["amount"]
     from_account = Account.query.get(request_data["from_account_id"])
@@ -47,6 +48,9 @@ def pay(request_data):
 
     if not to_account:
         raise InvalidRequestParameter("to_account_id")
+
+    if from_account.id == to_account.id:
+        raise APIException(400, "You can't send money to the same account")
 
     if (
         not current_user.has_permission(Permissions.UserToUserTransactions)
@@ -66,11 +70,45 @@ def pay(request_data):
 
     transaction = Transaction(
         amount=amount,
-        from_account=from_account.id,
-        to_account=to_account.id,
-        application=current_user.id,
+        from_account=from_account,
+        to_account=to_account,
+        application=current_user,
     )
     db.session.add(transaction)
+    db.session.commit()
+
+    return transaction
+
+
+@transactions_bp.route("", methods=["PUT"])
+@login_required
+@validate_permission(Permissions.UpdateTransactionStatus)
+@validate_request(UpdateTransactionRequestSchema)
+@validate_response(TransactionSchema)
+def update_transaction_status(request_data):
+    transaction = Transaction.query.with_for_update().get(
+        request_data["transaction_id"]
+    )
+    status = request_data["status"]
+
+    if not transaction:
+        raise InvalidRequestParameter("transaction_id")
+
+    if transaction.status in (TransactionStatus.Done, TransactionStatus.Rejected):
+        return transaction
+
+    if status not in (TransactionStatus.Done, TransactionStatus.Rejected):
+        raise InvalidRequestParameter("status")
+
+    if transaction.from_account.money < transaction.amount:
+        raise APIException(
+            400, "Sender account has not enough money for the transaction."
+        )
+
+    transaction.from_account.money -= transaction.amount
+    transaction.to_account.money += transaction.amount
+    transaction.update_status(status)
+
     db.session.commit()
 
     return transaction

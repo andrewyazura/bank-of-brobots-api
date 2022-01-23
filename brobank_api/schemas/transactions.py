@@ -8,8 +8,14 @@ from brobank_api.models import Transaction
 
 class PayRequestSchema(Schema):
     amount = fields.Float()
+
     from_account_id = fields.UUID()
     to_account_id = fields.UUID()
+
+
+class UpdateTransactionRequestSchema(Schema):
+    transaction_id = fields.Integer()
+    status = EnumField(TransactionStatus)
 
 
 class TransactionSchema(ma.SQLAlchemySchema):

@@ -6,7 +6,6 @@ Create Date: 2022-01-23 14:58:06.464677
 
 """
 from alembic import op
-import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 
@@ -22,6 +21,7 @@ tmp_type = postgresql.ENUM('Active', 'Deleted', 'Restricted', name='tmptype')
 
 
 def upgrade():
+    tmp_type.drop(op.get_bind(), checkfirst=False)
     tmp_type.create(op.get_bind(), checkfirst=False)
     op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE tmptype USING status::text::tmptype')
     old_type.drop(op.get_bind(), checkfirst=False)
@@ -30,8 +30,9 @@ def upgrade():
 
 
 def downgrade():
+    tmp_type.drop(op.get_bind(), checkfirst=False)
     tmp_type.create(op.get_bind(), checkfirst=False)
-    op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE tmp_type USING status::text::tmp_type')
+    op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE tmptype USING status::text::tmptype')
     new_type.drop(op.get_bind(), checkfirst=False)
     old_type.create(op.get_bind(), checkfirst=False)
     op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE externalapplicationstatus USING status::text::externalapplicationstatus')
