@@ -113,8 +113,3 @@ class ExternalApplication(UserMixin, db.Model):
 
     def has_permission(self, permission):
         return permission in self.permissions
-
-    def mark_deleted(self):
-        self.status = ExternalApplicationStatus.Deleted
-        self.name = f"{self.name}_{token_hex(8)}"
-        self.email = f"{self.email}_{token_hex(8)}"

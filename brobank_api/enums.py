@@ -15,7 +15,6 @@ class TransactionStatus(Enum):
 
 class ExternalApplicationStatus(Enum):
     Active = auto()
-    Deleted = auto()
     Restricted = auto()
 
 

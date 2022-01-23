@@ -16,7 +16,7 @@ def load_application_from_request(request):
     token = token.replace("Bearer ", "", 1)
     application = ExternalApplication.get_by_token(token)
 
-    if not application or application.status == ExternalApplicationStatus.Deleted:
+    if not application:
         raise APIException(400, "Bearer token is invalid.")
 
     if application.status == ExternalApplicationStatus.Restricted:

@@ -45,16 +45,6 @@ def update_application(request_data):
     return current_user
 
 
-@applications_bp.route("", methods=["DELETE"])
-@login_required
-@validate_response(ApplicationSchema)
-def delete_application():
-    current_user.mark_deleted()
-    db.session.commit()
-
-    return current_user
-
-
 @applications_bp.route("/accounts", methods=["GET"])
 @login_required
 @validate_request(AccountSchema)
