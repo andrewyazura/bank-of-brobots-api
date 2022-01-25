@@ -21,18 +21,18 @@ tmp_type = postgresql.ENUM('Active', 'Deleted', 'Restricted', name='tmptype')
 
 
 def upgrade():
-    tmp_type.drop(op.get_bind(), checkfirst=False)
     tmp_type.create(op.get_bind(), checkfirst=False)
     op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE tmptype USING status::text::tmptype')
     old_type.drop(op.get_bind(), checkfirst=False)
     new_type.create(op.get_bind(), checkfirst=False)
     op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE externalapplicationstatus USING status::text::externalapplicationstatus')
+    tmp_type.drop(op.get_bind(), checkfirst=False)
 
 
 def downgrade():
-    tmp_type.drop(op.get_bind(), checkfirst=False)
     tmp_type.create(op.get_bind(), checkfirst=False)
     op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE tmptype USING status::text::tmptype')
     new_type.drop(op.get_bind(), checkfirst=False)
     old_type.create(op.get_bind(), checkfirst=False)
     op.execute('ALTER TABLE external_applications ALTER COLUMN status TYPE externalapplicationstatus USING status::text::externalapplicationstatus')
+    tmp_type.drop(op.get_bind(), checkfirst=False)
