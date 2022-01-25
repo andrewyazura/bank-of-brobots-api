@@ -6,7 +6,7 @@ git reset --hard
 git clean -f -d
 git pull --rebase
 
-pipenv install --deploy
+pipenv sync
 pipenv run flask db upgrade
 
 cp scripts/api.service ~/.config/systemd/user/bank-of-brobots-api.service
