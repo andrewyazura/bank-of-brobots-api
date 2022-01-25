@@ -1,4 +1,4 @@
-from marshmallow import fields, validate
+from marshmallow import fields
 
 from brobank_api import marshmallow as ma
 from brobank_api.models import ExternalApplication

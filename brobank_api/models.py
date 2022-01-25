@@ -44,7 +44,9 @@ class Account(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     user = db.relationship("User", back_populates="accounts")
 
-    application_id = db.Column(db.Integer, db.ForeignKey("external_applications.id"), nullable=True)
+    application_id = db.Column(
+        db.Integer, db.ForeignKey("external_applications.id"), nullable=True
+    )
     application = db.relationship("ExternalApplication", back_populates="accounts")
 
     created_on = db.Column(db.DateTime, default=datetime.now)

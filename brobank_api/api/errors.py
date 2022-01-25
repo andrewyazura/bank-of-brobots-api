@@ -2,7 +2,7 @@ import re
 
 from flask import Blueprint, current_app, request
 from marshmallow import ValidationError
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from brobank_api import db
 from brobank_api.exceptions import APIException
