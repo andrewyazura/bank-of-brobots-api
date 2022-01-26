@@ -3,6 +3,7 @@ import re
 from flask import Blueprint, current_app, request
 from marshmallow import ValidationError
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from werkzeug.exceptions import HTTPException
 
 from brobank_api import db
 from brobank_api.exceptions import APIException
@@ -10,17 +11,23 @@ from brobank_api.exceptions import APIException
 errors_bp = Blueprint("errors", __name__)
 
 
-@errors_bp.app_errorhandler(404)
-def not_found_error(error):
-    current_app.logger.warning(f"Resource not found - {request.path}")
-    return {"error": "Resource not found."}, 404
+@errors_bp.app_errorhandler(Exception)
+def all_exceptions_handler(error):
+    current_app.logger.info(
+        f"{request.remote_addr} - {request.method} - {request.path}"
+    )
+    current_app.logger.error(error)
+    return {"error": "Internal Server Error"}, 500
 
 
-@errors_bp.app_errorhandler(500)
-def internal_error(error):
+@errors_bp.app_errorhandler(HTTPException)
+def http_exception_handler(error):
     db.session.rollback()
-    current_app.logger.warning(f"Internal error - {error}")
-    return {"error": "Internal error."}, 500
+    current_app.logger.info(
+        f"{request.remote_addr} - {request.method} - {request.path}"
+    )
+    current_app.logger.error(error)
+    return {"error": error.name}, error.code
 
 
 @errors_bp.app_errorhandler(APIException)
