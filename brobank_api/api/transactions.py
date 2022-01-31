@@ -1,6 +1,7 @@
 import requests
-from flask import Blueprint, current_app
+from flask import Blueprint, after_this_request, current_app
 from flask_login import current_user, login_required
+from requests.exceptions import RequestException
 
 from brobank_api import db
 from brobank_api.enums import Permissions, TransactionStatus
@@ -64,6 +65,9 @@ def pay(request_data):
             "execute direct user-to-user transactions",
         )
 
+    if amount <= 0:
+        raise InvalidRequestParameter("amount")
+
     if from_account.money < amount:
         raise APIException(
             400, "Sender account has not enough money for the transaction."
@@ -113,10 +117,19 @@ def update_transaction_status(request_data):
     db.session.commit()
 
     if callback_url := transaction.application.callback_url:
-        requests.post(
-            url=callback_url,
-            data=TransactionSchema().dump(transaction),
-            headers=current_app.config["CALLBACK_HEADERS"],
-        )
+        # deferred request callback
+        @after_this_request
+        def send_callback(response):
+            try:
+                requests.post(
+                    url=callback_url,
+                    data=TransactionSchema().dump(transaction),
+                    headers=current_app.config["CALLBACK"]["HEADERS"],
+                    timeout=current_app.config["CALLBACK"]["TIMEOUT"],
+                )
+            except RequestException as exception:
+                current_app.logger.warning(exception)
+            finally:
+                return response
 
     return transaction
