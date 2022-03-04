@@ -1,12 +1,12 @@
 """Initial structure
 
 Revision ID: ab940370fa85
-Revises: 
+Revises:
 Create Date: 2021-12-22 20:54:24.698744
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
@@ -79,10 +79,7 @@ def upgrade():
         sa.Column("money", sa.Float(), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.Column("created_on", sa.DateTime(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["user_id"],
-            ["users.id"],
-        ),
+        sa.ForeignKeyConstraint(["user_id"], ["users.id"]),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
@@ -105,18 +102,9 @@ def upgrade():
         sa.Column("created_on", sa.DateTime(), nullable=True),
         sa.Column("confirmed_on", sa.DateTime(), nullable=True),
         sa.Column("application", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["application"],
-            ["external_applications.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["from_account"],
-            ["accounts.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["to_account"],
-            ["accounts.id"],
-        ),
+        sa.ForeignKeyConstraint(["application"], ["external_applications.id"]),
+        sa.ForeignKeyConstraint(["from_account"], ["accounts.id"]),
+        sa.ForeignKeyConstraint(["to_account"], ["accounts.id"]),
         sa.PrimaryKeyConstraint("id"),
     )
     # ### end Alembic commands ###

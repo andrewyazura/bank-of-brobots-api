@@ -5,10 +5,9 @@ Revises: ab940370fa85
 Create Date: 2022-01-20 13:42:10.056457
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
-
 
 # revision identifiers, used by Alembic.
 revision = "f7c61cd99317"
@@ -52,7 +51,8 @@ def upgrade():
     new_type.create(op.get_bind(), checkfirst=False)
 
     op.execute(
-        "ALTER TABLE external_applications ALTER COLUMN permissions TYPE permissions[] USING permissions::text::permissions[]"
+        "ALTER TABLE external_applications ALTER COLUMN permissions TYPE "
+        "permissions[] USING permissions::text::permissions[]"
     )
 
     old_type.drop(op.get_bind(), checkfirst=False)
@@ -87,7 +87,8 @@ def downgrade():
     old_type.create(op.get_bind(), checkfirst=False)
 
     op.execute(
-        "ALTER TABLE external_applications ALTER COLUMN permissions TYPE endpointpermissions[] USING permissions::text::endpointpermissions[]"
+        "ALTER TABLE external_applications ALTER COLUMN permissions TYPE "
+        "endpointpermissions[] USING permissions::text::endpointpermissions[]"
     )
 
     new_type.drop(op.get_bind(), checkfirst=False)

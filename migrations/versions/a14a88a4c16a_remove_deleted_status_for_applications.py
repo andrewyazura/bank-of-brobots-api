@@ -8,7 +8,6 @@ Create Date: 2022-01-23 14:58:06.464677
 from alembic import op
 from sqlalchemy.dialects import postgresql
 
-
 # revision identifiers, used by Alembic.
 revision = "a14a88a4c16a"
 down_revision = "f7c61cd99317"
@@ -25,12 +24,14 @@ tmp_type = postgresql.ENUM("Active", "Deleted", "Restricted", name="tmptype")
 def upgrade():
     tmp_type.create(op.get_bind(), checkfirst=False)
     op.execute(
-        "ALTER TABLE external_applications ALTER COLUMN status TYPE tmptype USING status::text::tmptype"
+        "ALTER TABLE external_applications ALTER COLUMN status TYPE "
+        "tmptype USING status::text::tmptype"
     )
     old_type.drop(op.get_bind(), checkfirst=False)
     new_type.create(op.get_bind(), checkfirst=False)
     op.execute(
-        "ALTER TABLE external_applications ALTER COLUMN status TYPE externalapplicationstatus USING status::text::externalapplicationstatus"
+        "ALTER TABLE external_applications ALTER COLUMN status TYPE "
+        "externalapplicationstatus USING status::text::externalapplicationstatus"
     )
     tmp_type.drop(op.get_bind(), checkfirst=False)
 
@@ -38,11 +39,13 @@ def upgrade():
 def downgrade():
     tmp_type.create(op.get_bind(), checkfirst=False)
     op.execute(
-        "ALTER TABLE external_applications ALTER COLUMN status TYPE tmptype USING status::text::tmptype"
+        "ALTER TABLE external_applications ALTER COLUMN status TYPE "
+        "tmptype USING status::text::tmptype"
     )
     new_type.drop(op.get_bind(), checkfirst=False)
     old_type.create(op.get_bind(), checkfirst=False)
     op.execute(
-        "ALTER TABLE external_applications ALTER COLUMN status TYPE externalapplicationstatus USING status::text::externalapplicationstatus"
+        "ALTER TABLE external_applications ALTER COLUMN status TYPE "
+        "externalapplicationstatus USING status::text::externalapplicationstatus"
     )
     tmp_type.drop(op.get_bind(), checkfirst=False)
