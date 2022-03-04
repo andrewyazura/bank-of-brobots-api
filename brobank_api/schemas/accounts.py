@@ -12,5 +12,15 @@ class AccountSchema(ma.SQLAlchemySchema):
     money = ma.auto_field()
 
 
+class UserAccountSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Account
+
+    id = ma.auto_field()
+    money = ma.auto_field()
+
+    user_id = ma.auto_field(required=True)
+
+
 class AccountsSchema(Schema):
     accounts = fields.List(fields.Nested(AccountSchema))
