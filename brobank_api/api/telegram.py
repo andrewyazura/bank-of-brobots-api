@@ -6,7 +6,7 @@ from psycopg2.errors import IntegrityError
 
 from brobank_api import db
 from brobank_api.exceptions import APIException
-from brobank_api.models import User
+from brobank_api.models import Account, User
 from brobank_api.schemas.telegram import TelegramCallbackSchema
 from brobank_api.validators import validate_request
 
@@ -29,6 +29,7 @@ def telegram_callback(request_data):
         raise APIException(400, "Invalid callback hash.")
 
     request_data.pop("auth_date", None)
+    request_data["telegram_id"] = request_data.pop("id")
 
     try:
         user = User(**request_data)
@@ -36,5 +37,9 @@ def telegram_callback(request_data):
         db.session.commit()
     except IntegrityError:
         return redirect(bot_config.get("REDIRECT_URL")), 302
+
+    account = Account(user_id=user.id)
+    db.session.add(account)
+    db.session.commit()
 
     return redirect(bot_config.get("REDIRECT_URL")), 302

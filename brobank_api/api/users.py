@@ -41,7 +41,7 @@ def get_accounts(request_data):
 @users_bp.route("/accounts", methods=["POST"])
 @login_required
 @validate_permission(Permissions.Users)
-@validate_request(UserAccountSchema)
+@validate_request(UserAccountSchema, only=("user_id",))
 @validate_response(AccountSchema)
 def create_account(request_data):
     account = Account(user_id=request_data["user_id"])
